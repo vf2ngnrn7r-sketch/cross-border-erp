@@ -42,5 +42,10 @@ class SyncAmazonAccountJob implements ShouldQueue
             'store_qualifications' => $sync->syncStoreQualifications($account),
             default => $sync->syncAll($account),
         };
+
+        // syncAll already touches; per-scope syncs still update the account stamp
+        if ($this->scope !== 'all') {
+            $sync->touchSyncedAt($account->fresh());
+        }
     }
 }

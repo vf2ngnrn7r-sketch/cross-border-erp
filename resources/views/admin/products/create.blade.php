@@ -6,6 +6,7 @@
 <form method="POST" action="{{ route('admin.products.store') }}">@csrf
 @include('admin.products._form')
 <button class="erp-btn" type="submit">创建</button>
+<a class="erp-btn erp-btn-ghost" href="{{ route('admin.products.index') }}">取消</a>
 </form>
 </div>
 @endsection

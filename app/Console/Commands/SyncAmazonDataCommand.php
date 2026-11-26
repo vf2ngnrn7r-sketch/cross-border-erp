@@ -62,6 +62,10 @@ class SyncAmazonDataCommand extends Command
             foreach ($result as $type => $job) {
                 $this->line("  → {$type}: {$job->status}");
             }
+
+            if ($scope !== 'all') {
+                $sync->touchSyncedAt($account->fresh());
+            }
         }
 
         return self::SUCCESS;

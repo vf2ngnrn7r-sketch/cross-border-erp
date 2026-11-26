@@ -16,3 +16,6 @@ Schedule::command('amazon:sync --scope=orders --queue')->hourly();
 Schedule::command('amazon:sync --scope=inventory --queue')->dailyAt('02:00');
 Schedule::command('amazon:sync --scope=finance --queue')->dailyAt('03:00');
 Schedule::command('amazon:sync --scope=listings --queue')->dailyAt('04:00');
+Schedule::command('amazon:sync --scope=catalog --queue')->dailyAt('04:30');
+Schedule::command('amazon:sync --scope=product_qualifications --queue')->weeklyOn(1, '05:00');
+Schedule::command('amazon:sync --scope=store_qualifications --queue')->weeklyOn(1, '05:15');

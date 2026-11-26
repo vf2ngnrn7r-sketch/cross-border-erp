@@ -13,7 +13,7 @@ class InventoryController extends Controller
     {
         $org = $request->user()->resolveOrganization();
         $inventories = Inventory::query()
-            ->with(['amazonAccount', 'marketplace'])
+            ->with(['amazonAccount', 'marketplace', 'product'])
             ->when($org, fn ($q) => $q->where('organization_id', $org->id))
             ->when($request->channel, fn ($q) => $q->where('fulfillment_channel', $request->channel))
             ->when($request->q, fn ($q) => $q->where(function ($qq) use ($request) {

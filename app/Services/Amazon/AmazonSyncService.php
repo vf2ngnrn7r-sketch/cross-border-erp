@@ -860,7 +860,7 @@ class AmazonSyncService
 
     public function syncAll(AmazonAccount $account): array
     {
-        return DB::transaction(function () use ($account) {
+        $results = DB::transaction(function () use ($account) {
             // catalog 先于 listings/inventory，便于关联 product_id / quantity
             return [
                 'catalog' => $this->syncCatalog($account),
@@ -877,6 +877,16 @@ class AmazonSyncService
                 'store_qualifications' => $this->syncStoreQualifications($account),
             ];
         });
+
+        $account->forceFill(['last_synced_at' => now()])->save();
+
+        return $results;
+    }
+
+    /** 任意 scope 成功后刷新账号上次同步时间 */
+    public function touchSyncedAt(AmazonAccount $account): void
+    {
+        $account->forceFill(['last_synced_at' => now()])->save();
     }
 
     protected function startJob(AmazonAccount $account, string $type, ?string $reportType = null): SyncJob

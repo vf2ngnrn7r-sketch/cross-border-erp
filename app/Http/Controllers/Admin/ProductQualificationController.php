@@ -44,7 +44,18 @@ class ProductQualificationController extends Controller
 
     public function create(Request $request): View
     {
-        return view('admin.product-qualifications.create', $this->formLookups($request));
+        $lookups = $this->formLookups($request);
+        $item = new ProductQualification;
+        if ($request->filled('product_id')) {
+            $product = Product::query()->find($request->integer('product_id'));
+            if ($product) {
+                $item->product_id = $product->id;
+                $item->asin = $product->asin;
+                $item->sku = $product->sku;
+            }
+        }
+
+        return view('admin.product-qualifications.create', [...$lookups, 'item' => $item]);
     }
 
     public function store(Request $request): RedirectResponse

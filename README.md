@@ -1,38 +1,8 @@
 # 跨境 ERP（Amazon SP-API 导向脚手架）
 
-基于 **Laravel 12 + MySQL** 的亚马逊跨境卖家 ERP 起步工程：多租户组织、多店铺、商品/库存/订单/财务/广告/退货与同步任务骨架。
+基于 **Laravel 12 + MySQL** 的亚马逊跨境卖家 ERP 起步工程：多租户组织、多店铺、中文后台、JSON API。
 
-**默认不调用真实 Amazon API。** 本地通过 `AMAZON_DRIVER=fixture` 读取 SP-API 形态的 JSON fixtures 模拟同步。
-
-## 功能模块
-
-| 模块 | 说明 |
-|------|------|
-| 认证 / 多租户 | Laravel Breeze；`organizations` + `organization_user`；用户 `current_organization_id` |
-| 亚马逊账号 | 店铺、站点（marketplace）、SP-API 凭证绑定（加密字段 + 占位符） |
-| 商品管理 | 主数据、父子变体、Browse Node、图片、属性；Listing 按站点状态；库存数量挂钩 |
-| 商品资质 | 证书 / 类目准入 / 检测报告；到期状态；关联商品与 ASIN（Fixture + CRUD） |
-| 店铺资质 | Brand Registry / 类目批准 / 执照税务；关联亚马逊账号；到期预警 |
-| 库存 | FBA / FBM 数量字段与同步落库 |
-| 订单 | 订单、订单行、履约状态 |
-| 财务 | 结算单、费用/财务事件（经 Fixture 同步） |
-| 广告 | 广告活动 / 广告组（Fixture → 落库） |
-| 退货 / A-Z / 反馈 | 退货、A-to-Z 索赔、买家反馈 |
-| 采购 / 供应商 | 内部 ERP：供应商、采购单及明细 |
-| 仓配 / 货件 | 仓库、FBA 入库（Fixture）+ FBM 出库追踪 |
-| 消息 / Case | 买家消息与客服 Case（Fixture） |
-| 广告效果 | 日维度展示/点击/花费/销售/ACoS/ROAS |
-| 经营报表 | `/admin/reports` 聚合订单/库存/财务/广告等 |
-| 报表 / 同步 | `SyncJob`、`ReportRequest`、队列 Job、`amazon:sync` / `amazon:report`、定时任务 |
-| 管理 UI | `/admin/*` 中文后台 |
-| JSON API | `/api/v1/*`（session 认证）+ `/api/v1/health` |
-
-## 环境要求
-
-- PHP 8.2+（扩展：mbstring、openssl、pdo_mysql、tokenizer、xml、ctype、json、bcmath）
-- Composer 2
-- MySQL 8+
-- Node.js 18+（前端资源 Vite）
+**默认不调用真实 Amazon API。** `AMAZON_DRIVER=fixture` 读取 SP-API 形态的 JSON fixtures 模拟同步并落库。
 
 ## 快速开始
 
@@ -44,116 +14,113 @@ composer install
 cp .env.example .env
 php artisan key:generate
 
-# 编辑 .env 中的 MySQL 连接，例如：
-# DB_CONNECTION=mysql
-# DB_HOST=127.0.0.1
-# DB_PORT=3306
+# 编辑 .env 中的 MySQL：
 # DB_DATABASE=cross_border_erp
 # DB_USERNAME=erp
 # DB_PASSWORD=erp_secret
 
 php artisan migrate --seed
 npm install && npm run build
-
 php artisan serve
 ```
 
-浏览器打开 `http://127.0.0.1:8000`，演示账号：
+打开 http://127.0.0.1:8000 ，演示登录：
 
-- 邮箱：`admin@example.com`
-- 密码：`password`
+| | |
+|--|--|
+| 邮箱 | `admin@example.com` |
+| 密码 | `password` |
 
-Seed 会通过 Fixture 驱动执行一次全量同步，后台即可看到订单/库存/财务等数据。
+Seed 会用 Fixture 驱动跑一次全量同步，后台即可看到商品/订单/库存/资质等演示数据。
 
-## Amazon 驱动（模拟优先）
+可选：`php artisan queue:work`（后台「同步」按钮走队列）、`php artisan schedule:work`（定时同步）。
+
+## Amazon 驱动（默认 fixture）
 
 ```env
-# fixture（默认）| stub | http（未实现，会安全回退 fixture）
 AMAZON_DRIVER=fixture
-# 可选：自定义 fixture 根目录（默认 resources/amazon/fixtures）
-AMAZON_FIXTURES_PATH=
-
-# 以下仅为占位，切勿填入真实密钥提交到仓库
-AMAZON_SP_API_CLIENT_ID=
-AMAZON_SP_API_CLIENT_SECRET=
-AMAZON_SP_API_REFRESH_TOKEN=
-AMAZON_SP_API_ACCESS_KEY_ID=
-AMAZON_SP_API_SECRET_ACCESS_KEY=
-AMAZON_SP_API_REGION=na
-AMAZON_SP_API_ENDPOINT=https://sellingpartnerapi-na.amazon.com
-AMAZON_LWA_ENDPOINT=https://api.amazon.com/auth/o2/token
-AMAZON_SP_API_STUB=true
+# AMAZON_FIXTURES_PATH=   # 空则用 resources/amazon/fixtures
 ```
 
 | 驱动 | 行为 |
 |------|------|
-| `fixture` | 读取 `resources/amazon/fixtures/**/*.json`（推荐） |
-| `stub` | 进程内生成少量假数据（无文件） |
-| `http` | 预留；当前回退到 fixture，**不会**访问 Amazon |
+| `fixture`（默认） | 读 `resources/amazon/fixtures/**/*.json`，无外网 |
+| `stub` | 进程内少量假数据 |
+| `http` | 未实现；安全回退 fixture，**不会**访问 Amazon |
 
-绑定逻辑见 `AppServiceProvider` → `AmazonSpApiClient`。
+映射与占位符见 `resources/amazon/fixtures/README.md`（含 `{{now_add_days:N}}` 等）。
 
-### Fixture 说明
-
-- 目录说明与文件映射：`resources/amazon/fixtures/README.md`
-- 覆盖范围：orders、order items、inventory、listings、catalog、finance、advertising、returns（含 A-Z/反馈）、reports
-- 占位符：`{{now}}`、`{{now_sub_hours:N}}`、`{{uuid}}`、`{{account_id}}` 等
-- 按店铺覆盖：`resources/amazon/fixtures/accounts/{seller_id}/...`
+## 同步命令
 
 ```bash
-# 列出当前 fixture
 php artisan amazon:fixtures:list
-
-# 从 fixture 同步到数据库（供后台/API 展示）
-php artisan amazon:sync
+php artisan amazon:sync                          # 全量
+php artisan amazon:sync --scope=catalog
+php artisan amazon:sync --scope=listings
+php artisan amazon:sync --scope=inventory
 php artisan amazon:sync --scope=orders
+php artisan amazon:sync --scope=finance
 php artisan amazon:sync --scope=ads
 php artisan amazon:sync --scope=ad_metrics
+php artisan amazon:sync --scope=returns
 php artisan amazon:sync --scope=fba_inbound
 php artisan amazon:sync --scope=messaging
-```
-
-主要后台路由：`/admin`、`/admin/reports`、`/admin/purchasing`、`/admin/warehouse`、`/admin/messaging`、`/admin/advertising`。
-
-### 如何新增 Fixture
-
-1. 在 `resources/amazon/fixtures/<模块>/` 添加或修改 JSON，尽量保持 SP-API 字段名。
-2. 如需账号差异，放到 `accounts/{seller_id}/` 同名相对路径。
-3. 若新增接口方法：扩展 `AmazonSpApiClient` + `FixtureAmazonSpApiClient`，并在 `AmazonSyncService` 落库。
-4. 运行 `php artisan amazon:sync --scope=...` 验证。
-
-## 常用命令
-
-```bash
-php artisan amazon:sync
-php artisan amazon:sync --scope=orders --queue
-php artisan amazon:sync --account=1 --scope=inventory
+php artisan amazon:sync --scope=product_qualifications
+php artisan amazon:sync --scope=store_qualifications
+php artisan amazon:sync --account=1 --scope=orders --queue
 php artisan amazon:report --account=1
-php artisan amazon:fixtures:list
-
-php artisan queue:work
-php artisan schedule:work
 ```
 
-定时任务见 `routes/console.php`。
+后台：亚马逊账号详情页可按 scope 投递队列同步。定时任务见 `routes/console.php`。
+
+## 模块地图（Admin / API）
+
+| 模块 | Admin | API (`/api/v1`，session 认证) |
+|------|-------|------------------------------|
+| 总览 / 报表 | `/admin`、`/admin/reports` | `/reports/summary` |
+| 亚马逊账号 | `/admin/amazon-accounts` | `/amazon-accounts` |
+| 商品目录 | `/admin/products`（CRUD） | `/products`、`/products/{id}`、`/variants`、`/categories` |
+| 商品资质 | `/admin/product-qualifications`（CRUD） | `/product-qualifications` |
+| 店铺资质 | `/admin/store-qualifications`（CRUD） | `/store-qualifications` |
+| Listing | `/admin/listings` | `/listings` |
+| 库存 | `/admin/inventories` | `/inventories` |
+| 采购 | `/admin/purchasing` | `/suppliers`、`/purchase-orders` |
+| 仓配 | `/admin/warehouse` | `/warehouses`、`/shipments` |
+| 订单 | `/admin/orders` | `/orders` |
+| 财务 | `/admin/finance` | `/settlements` |
+| 广告 | `/admin/advertising` | `/campaigns`、`/ad-metrics` |
+| 消息 | `/admin/messaging` | `/messages`、`/cases` |
+| 退货 | `/admin/returns` | `/returns` |
+| 同步任务 | `/admin/sync-jobs` | `/sync-jobs` |
+| 健康检查 | — | `/health`（无需登录） |
+
+## 功能摘要
+
+- 认证 / 多租户：`organizations` + `organization_user`
+- 商品：父子变体、Browse Node、图片、Listing 状态、库存挂钩
+- 资质：商品证书/类目准入；店铺 Brand Registry/类目批准；到期预警
+- 采购 / 仓配：内部 ERP（供应商、PO、FBA 入库 fixture、FBM 出库）
+- 财务 / 广告 / 退货 / 消息：Fixture 同步落库
+- 凭证字段加密占位；仓库内无真实 Amazon 密钥
 
 ## 目录要点
 
 ```
 app/Contracts/AmazonSpApiClient.php
-app/Services/Amazon/FixtureLoader.php
-app/Services/Amazon/FixtureAmazonSpApiClient.php
-app/Services/Amazon/StubAmazonSpApiClient.php
-app/Services/Amazon/AmazonSyncService.php
-resources/amazon/fixtures/            # SP-API 形态 JSON
+app/Services/Amazon/{FixtureLoader,FixtureAmazonSpApiClient,StubAmazonSpApiClient,AmazonSyncService}.php
+resources/amazon/fixtures/
 config/amazon.php
 ```
 
-## 已实现 vs 模拟
+## 已实现 vs 未实现
 
-**已实现：** 迁移与模型、组织隔离、后台 UI、API、种子、**Fixture 驱动同步落库**、队列/调度骨架。
+**已实现：** 迁移与模型、组织隔离、中文后台、API、种子、Fixture 同步落库、队列/调度骨架。
 
-**模拟 / 未实现：** 真实 SP-API / Advertising HTTP、LWA 换票、SigV4、报表文档下载解析、生产 RBAC。
+**未实现：** 真实 SP-API / Advertising HTTP、LWA、SigV4、报表文档下载解析、生产级 RBAC。
+
+## 环境要求
+
+PHP 8.2+、Composer 2、MySQL 8+、Node.js 18+（Vite）。
 
 ## 许可证
 

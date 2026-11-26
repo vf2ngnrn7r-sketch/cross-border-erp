@@ -16,7 +16,8 @@
 <tbody>
 @forelse($inventories as $inv)
 <tr>
-<td>{{ $inv->sku }}</td><td>{{ $inv->asin }}</td>
+<td>@if($inv->product)<a style="color:#7dd3fc" href="{{ route('admin.products.show', $inv->product) }}">{{ $inv->sku }}</a>@else{{ $inv->sku }}@endif</td>
+<td>{{ $inv->asin }}</td>
 <td><span class="erp-badge">{{ $inv->fulfillment_channel }}</span></td>
 <td>{{ $inv->quantity_available }}</td><td>{{ $inv->quantity_reserved }}</td>
 <td>{{ $inv->quantity_inbound }}</td><td>{{ $inv->quantity_unfulfillable }}</td>

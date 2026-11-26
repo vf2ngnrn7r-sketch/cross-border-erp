@@ -16,6 +16,8 @@
 </div>
 <p style="color:#94a3b8;font-size:.85rem;margin-bottom:1rem">密钥字段将写入占位符，请勿提交真实密钥到仓库。生产环境使用 .env / 密钥托管。</p>
 <button class="erp-btn" type="submit">保存</button>
+<a class="erp-btn erp-btn-ghost" href="{{ route('admin.amazon-accounts.index') }}">取消</a>
 </form>
 </div>
 @endsection
+

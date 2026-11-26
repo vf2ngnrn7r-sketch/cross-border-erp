@@ -11,20 +11,20 @@
     </p>
 
     <div class="erp-stats">
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['products'] }}</div><div class="l">商品</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['orders'] }}</div><div class="l">订单</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['inventory_skus'] }}</div><div class="l">库存 SKU</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['purchase_orders'] }}</div><div class="l">采购单</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['shipments'] }}</div><div class="l">货件</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['campaigns'] }}</div><div class="l">广告活动</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ number_format($stats['ad_spend'], 0) }}</div><div class="l">广告花费</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ number_format($stats['ad_sales'], 0) }}</div><div class="l">广告销售</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['unread_messages'] }}</div><div class="l">未读消息</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['open_cases'] }}</div><div class="l">未结 Case</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['returns'] }}</div><div class="l">退货</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['product_quals_expiring'] }}</div><div class="l">商品资质预警</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['store_quals_expiring'] }}</div><div class="l">店铺资质预警</div></div>
-        <div class="erp-card erp-stat"><div class="n">{{ $stats['sync_pending'] }}</div><div class="l">进行中同步</div></div>
+        <a class="erp-card erp-stat" href="{{ route('admin.products.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['products'] }}</div><div class="l">商品</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.orders.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['orders'] }}</div><div class="l">订单</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.inventories.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['inventory_skus'] }}</div><div class="l">库存 SKU</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.purchasing.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['purchase_orders'] }}</div><div class="l">采购单</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.warehouse.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['shipments'] }}</div><div class="l">货件</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.advertising.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['campaigns'] }}</div><div class="l">广告活动</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.advertising.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ number_format($stats['ad_spend'], 0) }}</div><div class="l">广告花费</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.advertising.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ number_format($stats['ad_sales'], 0) }}</div><div class="l">广告销售</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.messaging.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['unread_messages'] }}</div><div class="l">未读消息</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.messaging.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['open_cases'] }}</div><div class="l">未结 Case</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.returns.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['returns'] }}</div><div class="l">退货</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.product-qualifications.index', ['expiring' => 1]) }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['product_quals_expiring'] }}</div><div class="l">商品资质预警</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.store-qualifications.index', ['expiring' => 1]) }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['store_quals_expiring'] }}</div><div class="l">店铺资质预警</div></a>
+        <a class="erp-card erp-stat" href="{{ route('admin.sync-jobs.index') }}" style="text-decoration:none;color:inherit"><div class="n">{{ $stats['sync_pending'] }}</div><div class="l">进行中同步</div></a>
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">

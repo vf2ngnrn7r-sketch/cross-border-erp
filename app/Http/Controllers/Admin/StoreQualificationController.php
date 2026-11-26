@@ -50,7 +50,14 @@ class StoreQualificationController extends Controller
 
     public function create(Request $request): View
     {
-        return view('admin.store-qualifications.create', $this->formLookups($request));
+        $lookups = $this->formLookups($request);
+        $item = new StoreQualification;
+        $accountId = $request->integer('amazon_account_id') ?: $request->integer('account');
+        if ($accountId) {
+            $item->amazon_account_id = $accountId;
+        }
+
+        return view('admin.store-qualifications.create', [...$lookups, 'item' => $item]);
     }
 
     public function store(Request $request): RedirectResponse

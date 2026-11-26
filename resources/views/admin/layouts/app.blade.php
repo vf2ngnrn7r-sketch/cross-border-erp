@@ -36,6 +36,18 @@
         .erp-input { width: 100%; padding: .5rem .65rem; border-radius: .4rem; border: 1px solid rgba(148,163,184,.3); background: rgba(15,23,42,.6); color: #e2e8f0; }
         .erp-label { display: block; margin-bottom: .35rem; color: #94a3b8; font-size: .85rem; }
         .erp-form-row { margin-bottom: 1rem; }
+        .erp-flash-error { background: rgba(248,113,113,.15); border: 1px solid rgba(248,113,113,.35); color: #fca5a5; padding: .75rem 1rem; border-radius: .5rem; margin-bottom: 1rem; }
+        .erp-nav .nav-section { color: #64748b; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; margin: .85rem .75rem .35rem; }
+        nav[role=navigation] span, .pagination { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+        .pagination > * , nav[role=navigation] a, nav[role=navigation] span > span {
+            display: inline-block; padding: .35rem .65rem; border-radius: .4rem;
+            border: 1px solid rgba(148,163,184,.25); color: #cbd5e1; text-decoration: none; font-size: .85rem;
+            background: rgba(15,23,42,.45);
+        }
+        nav[role=navigation] [aria-current=page] span,
+        .pagination .active span {
+            background: rgba(56,189,248,.2); color: #7dd3fc; border-color: rgba(56,189,248,.4);
+        }
         @media (max-width: 900px) {
             .erp-shell { grid-template-columns: 1fr; }
             .erp-nav { border-right: none; border-bottom: 1px solid rgba(148,163,184,.2); }
@@ -46,14 +58,17 @@
 <div class="erp-shell">
     <aside class="erp-nav">
         <div class="erp-brand">跨境 ERP</div>
-        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">总览</a>
+        <div class="nav-section">总览</div>
+        <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">经营总览</a>
         <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">经营报表</a>
+        <div class="nav-section">店铺与商品</div>
         <a href="{{ route('admin.amazon-accounts.index') }}" class="{{ request()->routeIs('admin.amazon-accounts.*') ? 'active' : '' }}">亚马逊账号</a>
         <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">商品目录</a>
         <a href="{{ route('admin.product-qualifications.index') }}" class="{{ request()->routeIs('admin.product-qualifications.*') ? 'active' : '' }}">商品资质</a>
         <a href="{{ route('admin.store-qualifications.index') }}" class="{{ request()->routeIs('admin.store-qualifications.*') ? 'active' : '' }}">店铺资质</a>
         <a href="{{ route('admin.listings.index') }}" class="{{ request()->routeIs('admin.listings.*') ? 'active' : '' }}">Listing</a>
         <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'active' : '' }}">库存 FBA/FBM</a>
+        <div class="nav-section">履约与经营</div>
         <a href="{{ route('admin.purchasing.index') }}" class="{{ request()->routeIs('admin.purchasing.*') ? 'active' : '' }}">采购 / 供应商</a>
         <a href="{{ route('admin.warehouse.index') }}" class="{{ request()->routeIs('admin.warehouse.*') ? 'active' : '' }}">仓配 / 货件</a>
         <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">订单</a>
@@ -61,6 +76,7 @@
         <a href="{{ route('admin.advertising.index') }}" class="{{ request()->routeIs('admin.advertising.*') ? 'active' : '' }}">广告效果</a>
         <a href="{{ route('admin.messaging.index') }}" class="{{ request()->routeIs('admin.messaging.*') ? 'active' : '' }}">消息 / Case</a>
         <a href="{{ route('admin.returns.index') }}" class="{{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">退货 / A-Z / 反馈</a>
+        <div class="nav-section">系统</div>
         <a href="{{ route('admin.sync-jobs.index') }}" class="{{ request()->routeIs('admin.sync-jobs.*') ? 'active' : '' }}">同步任务</a>
         <hr style="border-color:rgba(148,163,184,.2);margin:1rem 0">
         <a href="{{ route('dashboard') }}">Breeze 面板</a>
@@ -73,6 +89,18 @@
     <main class="erp-main">
         @if (session('success'))
             <div class="erp-flash">{{ session('success') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="erp-flash-error">{{ session('error') }}</div>
+        @endif
+        @if ($errors->any())
+            <div class="erp-flash-error">
+                <ul style="margin:0;padding-left:1.1rem">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
         @yield('content')
     </main>
