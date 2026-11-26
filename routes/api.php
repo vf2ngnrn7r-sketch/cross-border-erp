@@ -13,7 +13,9 @@ Route::prefix('v1')->group(function () {
     Route::get('health', fn () => response()->json([
         'ok' => true,
         'app' => config('app.name'),
+        'amazon_driver' => config('amazon.driver'),
         'amazon_stub' => config('amazon.stub'),
+        'fixtures_path' => config('amazon.fixtures.path'),
     ]));
 });
 

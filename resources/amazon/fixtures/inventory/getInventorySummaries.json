@@ -1,0 +1,78 @@
+{
+  "payload": {
+    "granularity": {
+      "granularityType": "Marketplace",
+      "granularityId": "ATVPDKIKX0DER"
+    },
+    "inventorySummaries": [
+      {
+        "asin": "B0FIX001AA",
+        "fnSku": "X00FIX001AA",
+        "sellerSku": "SKU-EARBUD-BLK",
+        "condition": "NewItem",
+        "fulfillmentChannel": "FBA",
+        "productName": "DemoBrand Wireless Earbuds Pro",
+        "totalQuantity": 186,
+        "inventoryDetails": {
+          "fulfillableQuantity": 160,
+          "inboundWorkingQuantity": 10,
+          "inboundShippedQuantity": 12,
+          "inboundReceivingQuantity": 0,
+          "reservedQuantity": {
+            "totalReservedQuantity": 8,
+            "pendingCustomerOrderQuantity": 5,
+            "pendingTransshipmentQuantity": 2,
+            "fcProcessingQuantity": 1
+          },
+          "unfulfillableQuantity": {
+            "totalUnfulfillableQuantity": 6,
+            "customerDamagedQuantity": 2,
+            "warehouseDamagedQuantity": 3,
+            "distributorDamagedQuantity": 0,
+            "carrierDamagedQuantity": 0,
+            "defectiveQuantity": 1,
+            "expiredQuantity": 0
+          }
+        }
+      },
+      {
+        "asin": "B0FIX002BB",
+        "fnSku": null,
+        "sellerSku": "SKU-STAND-SLV",
+        "condition": "NewItem",
+        "fulfillmentChannel": "FBM",
+        "productName": "DemoBrand Desktop Stand",
+        "totalQuantity": 52,
+        "inventoryDetails": {
+          "fulfillableQuantity": 52,
+          "inboundWorkingQuantity": 0,
+          "inboundShippedQuantity": 0,
+          "inboundReceivingQuantity": 0,
+          "reservedQuantity": { "totalReservedQuantity": 0 },
+          "unfulfillableQuantity": { "totalUnfulfillableQuantity": 0 }
+        }
+      },
+      {
+        "asin": "B0FIX003CC",
+        "fnSku": "X00FIX003CC",
+        "sellerSku": "SKU-BOX-SET",
+        "condition": "NewItem",
+        "fulfillmentChannel": "FBA",
+        "productName": "DemoBrand Storage Box Set",
+        "totalQuantity": 94,
+        "inventoryDetails": {
+          "fulfillableQuantity": 80,
+          "inboundWorkingQuantity": 5,
+          "inboundShippedQuantity": 5,
+          "inboundReceivingQuantity": 0,
+          "reservedQuantity": { "totalReservedQuantity": 3 },
+          "unfulfillableQuantity": { "totalUnfulfillableQuantity": 1 }
+        }
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "FbaInventory.getInventorySummaries",
+    "driver": "fixture"
+  }
+}

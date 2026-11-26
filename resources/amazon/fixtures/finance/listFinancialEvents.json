@@ -1,0 +1,103 @@
+{
+  "payload": {
+    "FinancialEvents": {
+      "ShipmentEventList": [
+        {
+          "AmazonOrderId": "111-7845123-9988776",
+          "SellerOrderId": "111-7845123-9988776",
+          "MarketplaceName": "Amazon.com",
+          "PostedDate": "{{now_sub_hours:20}}",
+          "ShipmentItemList": [
+            {
+              "SellerSKU": "SKU-EARBUD-BLK",
+              "OrderItemId": "OI-7845123-1",
+              "QuantityShipped": 1,
+              "ItemChargeList": [
+                {
+                  "ChargeType": "Principal",
+                  "ChargeAmount": { "CurrencyCode": "USD", "CurrencyAmount": 29.99 }
+                },
+                {
+                  "ChargeType": "Tax",
+                  "ChargeAmount": { "CurrencyCode": "USD", "CurrencyAmount": 2.40 }
+                }
+              ],
+              "ItemFeeList": [
+                {
+                  "FeeType": "Commission",
+                  "FeeAmount": { "CurrencyCode": "USD", "CurrencyAmount": -4.50 }
+                },
+                {
+                  "FeeType": "FBAPerUnitFulfillmentFee",
+                  "FeeAmount": { "CurrencyCode": "USD", "CurrencyAmount": -3.22 }
+                }
+              ]
+            },
+            {
+              "SellerSKU": "SKU-STAND-SLV",
+              "OrderItemId": "OI-7845123-2",
+              "QuantityShipped": 1,
+              "ItemChargeList": [
+                {
+                  "ChargeType": "Principal",
+                  "ChargeAmount": { "CurrencyCode": "USD", "CurrencyAmount": 29.99 }
+                }
+              ],
+              "ItemFeeList": [
+                {
+                  "FeeType": "Commission",
+                  "FeeAmount": { "CurrencyCode": "USD", "CurrencyAmount": -4.50 }
+                },
+                {
+                  "FeeType": "ShippingChargeback",
+                  "FeeAmount": { "CurrencyCode": "USD", "CurrencyAmount": -1.10 }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "RefundEventList": [
+        {
+          "AmazonOrderId": "111-9080706-1122334",
+          "PostedDate": "{{now_sub_hours:40}}",
+          "ShipmentItemAdjustmentList": [
+            {
+              "SellerSKU": "SKU-EARBUD-BLK",
+              "QuantityShipped": 1,
+              "ItemChargeAdjustmentList": [
+                {
+                  "ChargeType": "Principal",
+                  "ChargeAmount": { "CurrencyCode": "USD", "CurrencyAmount": -19.99 }
+                }
+              ],
+              "ItemFeeAdjustmentList": [
+                {
+                  "FeeType": "Commission",
+                  "FeeAmount": { "CurrencyCode": "USD", "CurrencyAmount": 3.00 }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "ServiceFeeEventList": [
+        {
+          "AmazonOrderId": null,
+          "FeeReason": "Subscription",
+          "FeeList": [
+            {
+              "FeeType": "SubscriptionFee",
+              "FeeAmount": { "CurrencyCode": "USD", "CurrencyAmount": -39.99 }
+            }
+          ]
+        }
+      ]
+    },
+    "NextToken": null
+  },
+  "_fixture": {
+    "source": "Finances.listFinancialEvents",
+    "driver": "fixture"
+  }
+}

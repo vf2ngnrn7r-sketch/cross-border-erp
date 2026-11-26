@@ -1,0 +1,56 @@
+{
+  "payload": {
+    "items": [
+      {
+        "asin": "B0FIX001AA",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Wireless Earbuds Pro", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "color": [{ "value": "Black", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Wireless Earbuds Pro",
+            "browseClassification": { "displayName": "Headphones", "classificationId": "172541" }
+          }
+        ]
+      },
+      {
+        "asin": "B0FIX002BB",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Desktop Stand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Desktop Stand",
+            "browseClassification": { "displayName": "Home", "classificationId": "1063498" }
+          }
+        ]
+      },
+      {
+        "asin": "B0FIX003CC",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Storage Box Set", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Storage Box Set",
+            "browseClassification": { "displayName": "Storage", "classificationId": "3734451" }
+          }
+        ]
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "CatalogItems.getCatalogItem",
+    "driver": "fixture"
+  }
+}

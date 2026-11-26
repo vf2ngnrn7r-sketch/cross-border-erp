@@ -7,36 +7,50 @@ use App\Models\AmazonAccount;
 use Illuminate\Support\Str;
 
 /**
- * SP-API 桩客户端：不发起真实网络请求，返回可演示的结构化假数据
+ * 进程内简易桩（无 JSON 文件）。推荐本地使用 FixtureAmazonSpApiClient。
+ * 保留供 AMAZON_DRIVER=stub 或测试快速切换。
  */
 class StubAmazonSpApiClient implements AmazonSpApiClient
 {
     public function validateCredentials(AmazonAccount $account): bool
     {
-        // 桩模式：只要账号存在即视为「可校验」
         return $account->exists;
     }
 
     public function getOrders(AmazonAccount $account, array $params = []): array
     {
-        $now = now();
-
         return [
             'Orders' => [
                 [
                     'AmazonOrderId' => '902-'.$account->id.'-'.Str::upper(Str::random(7)),
-                    'PurchaseDate' => $now->subHours(6)->toIso8601String(),
+                    'PurchaseDate' => now()->subHours(6)->toIso8601String(),
                     'OrderStatus' => 'Unshipped',
                     'FulfillmentChannel' => 'MFN',
                     'SalesChannel' => 'Amazon.com',
                     'OrderTotal' => ['Amount' => '49.99', 'CurrencyCode' => 'USD'],
-                    'NumberOfItemsShipped' => 0,
-                    'NumberOfItemsUnshipped' => 1,
                     'IsPrime' => false,
-                    'LastUpdateDate' => $now->toIso8601String(),
+                    'LastUpdateDate' => now()->toIso8601String(),
                 ],
             ],
-            '_meta' => ['stub' => true, 'account_id' => $account->id],
+            '_meta' => ['driver' => 'stub', 'account_id' => $account->id],
+        ];
+    }
+
+    public function getOrderItems(AmazonAccount $account, string $amazonOrderId): array
+    {
+        return [
+            'OrderItems' => [
+                [
+                    'OrderItemId' => 'stub-item-1',
+                    'ASIN' => 'B0STUB0001',
+                    'SellerSKU' => 'SKU-DEMO-001',
+                    'Title' => 'Demo Wireless Earbuds',
+                    'QuantityOrdered' => 1,
+                    'QuantityShipped' => 0,
+                    'ItemPrice' => ['CurrencyCode' => 'USD', 'Amount' => '49.99'],
+                ],
+            ],
+            '_meta' => ['driver' => 'stub', 'amazon_order_id' => $amazonOrderId],
         ];
     }
 
@@ -53,17 +67,8 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
                     'reservedQuantity' => 5,
                     'unfulfillableQuantity' => 2,
                 ],
-                [
-                    'asin' => 'B0STUB0002',
-                    'sellerSku' => 'SKU-DEMO-002',
-                    'fulfillmentChannel' => 'FBM',
-                    'totalQuantity' => 45,
-                    'inboundQuantity' => 0,
-                    'reservedQuantity' => 0,
-                    'unfulfillableQuantity' => 0,
-                ],
             ],
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 
@@ -81,7 +86,7 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
                     'fulfillmentChannel' => 'FBA',
                 ],
             ],
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 
@@ -92,7 +97,7 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
             'reportType' => $reportType,
             'processingStatus' => 'DONE',
             'marketplaceIds' => $options['marketplaceIds'] ?? [],
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 
@@ -102,7 +107,7 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
             'reportId' => $reportId,
             'processingStatus' => 'DONE',
             'reportDocumentId' => 'stub-doc-'.Str::random(12),
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 
@@ -123,14 +128,13 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
                                 ],
                                 'ItemFeeList' => [
                                     ['FeeType' => 'Commission', 'FeeAmount' => ['CurrencyCode' => 'USD', 'CurrencyAmount' => -4.50]],
-                                    ['FeeType' => 'FBAPerUnitFulfillmentFee', 'FeeAmount' => ['CurrencyCode' => 'USD', 'CurrencyAmount' => -3.22]],
                                 ],
                             ],
                         ],
                     ],
                 ],
             ],
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 
@@ -145,9 +149,12 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
                     'targetingType' => 'auto',
                     'state' => 'enabled',
                     'dailyBudget' => 25.00,
+                    'adGroups' => [
+                        ['adGroupId' => 'stub-ag-1', 'name' => 'Default', 'state' => 'enabled', 'defaultBid' => 0.75],
+                    ],
                 ],
             ],
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 
@@ -165,7 +172,7 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
                     'returnDate' => now()->subDays(2)->toIso8601String(),
                 ],
             ],
-            '_meta' => ['stub' => true],
+            '_meta' => ['driver' => 'stub'],
         ];
     }
 }

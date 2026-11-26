@@ -1,0 +1,86 @@
+{
+  "payload": {
+    "numberOfResults": 3,
+    "items": [
+      {
+        "sku": "SKU-EARBUD-BLK",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX001AA",
+            "productType": "HEADPHONES",
+            "conditionType": "new_new",
+            "status": ["BUYABLE", "DISCOVERABLE"],
+            "itemName": "DemoBrand Wireless Earbuds Pro",
+            "createdDate": "2025-06-01T10:00:00Z",
+            "lastUpdatedDate": "{{now_sub_hours:12}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/earbud.jpg",
+              "height": 500,
+              "width": 500
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "offerType": "B2C",
+            "price": { "currencyCode": "USD", "amount": "29.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "fulfillmentChannel": "FBA"
+      },
+      {
+        "sku": "SKU-STAND-SLV",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX002BB",
+            "productType": "DESK_ACCESSORY",
+            "conditionType": "new_new",
+            "status": ["BUYABLE"],
+            "itemName": "DemoBrand Desktop Stand",
+            "lastUpdatedDate": "{{now_sub_hours:24}}"
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "offerType": "B2C",
+            "price": { "currencyCode": "USD", "amount": "34.99" },
+            "fulfillmentChannelCode": "DEFAULT"
+          }
+        ],
+        "fulfillmentChannel": "FBM"
+      },
+      {
+        "sku": "SKU-BOX-SET",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX003CC",
+            "productType": "STORAGE_BOX",
+            "conditionType": "new_new",
+            "status": ["BUYABLE", "DISCOVERABLE"],
+            "itemName": "DemoBrand Storage Box Set",
+            "lastUpdatedDate": "{{now_sub_hours:3}}"
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "offerType": "B2C",
+            "price": { "currencyCode": "USD", "amount": "24.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "fulfillmentChannel": "FBA"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "ListingsItems.searchListingsItems",
+    "driver": "fixture"
+  }
+}

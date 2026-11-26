@@ -1,0 +1,61 @@
+{
+  "payload": {
+    "returns": [
+      {
+        "returnId": "RET-FIX-10001",
+        "orderId": "111-7845123-9988776",
+        "asin": "B0FIX001AA",
+        "sellerSku": "SKU-EARBUD-BLK",
+        "fnsku": "X00FIX001AA",
+        "productName": "DemoBrand Wireless Earbuds Pro",
+        "quantity": 1,
+        "fulfillmentCenterId": "PHX3",
+        "detailedDisposition": "SELLABLE",
+        "reason": "UNWANTED_ITEM",
+        "status": "Unit returned to inventory",
+        "returnDate": "{{now_sub_hours:36}}",
+        "customerComments": "Changed my mind"
+      },
+      {
+        "returnId": "RET-FIX-10002",
+        "orderId": "111-2211990-4455667",
+        "asin": "B0FIX003CC",
+        "sellerSku": "SKU-BOX-SET",
+        "quantity": 1,
+        "reason": "DAMAGED_BY_FC",
+        "status": "requested",
+        "returnDate": "{{now_sub_hours:10}}",
+        "customerComments": null
+      }
+    ],
+    "aToZClaims": [
+      {
+        "claimId": "AZ-FIX-9001",
+        "orderId": "111-2211990-4455667",
+        "reason": "Item not received",
+        "status": "open",
+        "openedAt": "{{now_sub_hours:48}}",
+        "resolvedAt": null
+      }
+    ],
+    "customerFeedback": [
+      {
+        "orderId": "111-7845123-9988776",
+        "rating": 5,
+        "comments": "Fast shipping and great quality.",
+        "feedbackDate": "{{now_sub_hours:18}}"
+      },
+      {
+        "orderId": "111-2211990-4455667",
+        "rating": 3,
+        "comments": "Product ok, packaging could be better.",
+        "feedbackDate": "{{now_sub_hours:5}}"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "Returns.listReturns+AtoZ+Feedback",
+    "driver": "fixture",
+    "note": "Combined fixture for seller after-sales stubs"
+  }
+}

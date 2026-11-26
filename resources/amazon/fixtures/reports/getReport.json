@@ -1,0 +1,18 @@
+{
+  "payload": {
+    "reportId": "{{report_id}}",
+    "reportType": "{{report_type}}",
+    "processingStatus": "DONE",
+    "marketplaceIds": ["ATVPDKIKX0DER"],
+    "dataStartTime": "{{now_sub_hours:168}}",
+    "dataEndTime": "{{now}}",
+    "createdTime": "{{now_sub_hours:1}}",
+    "processingStartTime": "{{now_sub_hours:1}}",
+    "processingEndTime": "{{now}}",
+    "reportDocumentId": "amzn1.spdoc.fixture.{{uuid}}"
+  },
+  "_fixture": {
+    "source": "Reports.getReport",
+    "driver": "fixture"
+  }
+}
