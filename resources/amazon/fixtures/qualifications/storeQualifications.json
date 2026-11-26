@@ -1,0 +1,82 @@
+{
+  "payload": {
+    "qualifications": [
+      {
+        "externalId": "SQ-FIX-BR-001",
+        "qualificationType": "brand_registry",
+        "name": "Amazon Brand Registry — DemoBrand",
+        "brandName": "DemoBrand",
+        "documentNumber": "BR-US-DEMO-1001",
+        "status": "approved",
+        "issuedAt": "2024-11-01",
+        "expiresAt": null,
+        "fileUrl": "https://example.invalid/docs/brand-registry-demobrand.pdf",
+        "marketplaceId": "ATVPDKIKX0DER",
+        "notes": "Active Brand Registry enrollment (fixture)"
+      },
+      {
+        "externalId": "SQ-FIX-UNGATE-001",
+        "qualificationType": "category_approval",
+        "name": "Ungating — Topical / Health-adjacent accessories",
+        "categoryName": "Health & Personal Care (demo)",
+        "documentNumber": "UNGATE-HPC-334",
+        "status": "approved",
+        "issuedAt": "2025-05-20",
+        "expiresAt": "{{now_add_days:200}}",
+        "fileUrl": "https://example.invalid/docs/ungating-hpc.pdf",
+        "marketplaceId": "ATVPDKIKX0DER"
+      },
+      {
+        "externalId": "SQ-FIX-BIZ-001",
+        "qualificationType": "business_license",
+        "name": "Business License / Company Registration",
+        "documentNumber": "BL-CN-9144DEMO",
+        "status": "expiring",
+        "issuedAt": "2023-12-01",
+        "expiresAt": "{{now_add_days:22}}",
+        "fileUrl": "https://example.invalid/docs/business-license.pdf",
+        "marketplaceId": null,
+        "notes": "Annual renewal approaching"
+      },
+      {
+        "externalId": "SQ-FIX-TAX-001",
+        "qualificationType": "tax_info",
+        "name": "US Tax Interview / W-8BEN-E packet",
+        "documentNumber": "TAX-W8-DEMO",
+        "status": "approved",
+        "issuedAt": "2025-01-15",
+        "expiresAt": "{{now_add_days:320}}",
+        "fileUrl": "https://example.invalid/docs/w8bene.pdf",
+        "marketplaceId": "ATVPDKIKX0DER"
+      },
+      {
+        "externalId": "SQ-FIX-ID-001",
+        "qualificationType": "seller_identity",
+        "name": "Seller Identity Verification",
+        "documentNumber": "IDV-PASS-7788",
+        "status": "approved",
+        "issuedAt": "2024-09-01",
+        "expiresAt": null,
+        "fileUrl": null,
+        "marketplaceId": null
+      },
+      {
+        "externalId": "SQ-FIX-CAT-EXP",
+        "qualificationType": "category_approval",
+        "name": "Category Approval — Electronics Accessories (annual review)",
+        "categoryName": "Electronics Accessories",
+        "documentNumber": "CAT-APPR-EA-12",
+        "status": "expiring",
+        "issuedAt": "2025-02-01",
+        "expiresAt": "{{now_add_days:9}}",
+        "fileUrl": "https://example.invalid/docs/electronics-accessories-approval.pdf",
+        "marketplaceId": "ATVPDKIKX0DER",
+        "notes": "Demo: expires within 9 days"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "Account Health / Brand Registry / category approvals (simulated)",
+    "driver": "fixture"
+  }
+}

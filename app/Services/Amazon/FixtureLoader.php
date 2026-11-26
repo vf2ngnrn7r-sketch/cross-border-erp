@@ -103,6 +103,19 @@ class FixtureLoader
             $raw
         ) ?? $raw;
 
+        // {{now_add_days:N}} / {{now_add_hours:N}}
+        $raw = preg_replace_callback(
+            '/\{\{now_add_days:(\d+)\}\}/',
+            fn ($m) => now()->addDays((int) $m[1])->toIso8601String(),
+            $raw
+        ) ?? $raw;
+
+        $raw = preg_replace_callback(
+            '/\{\{now_add_hours:(\d+)\}\}/',
+            fn ($m) => now()->addHours((int) $m[1])->toIso8601String(),
+            $raw
+        ) ?? $raw;
+
         return $raw;
     }
 }

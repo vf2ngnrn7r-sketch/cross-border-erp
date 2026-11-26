@@ -39,5 +39,11 @@ Route::middleware('web', 'auth')->prefix('v1')->group(function () {
     Route::get('shipments', [ResourceApiController::class, 'shipments']);
     Route::get('messages', [ResourceApiController::class, 'messages']);
     Route::get('cases', [ResourceApiController::class, 'cases']);
+    Route::get('product-qualifications', [ResourceApiController::class, 'productQualifications']);
+    Route::post('product-qualifications', [ResourceApiController::class, 'storeProductQualification']);
+    Route::get('product-qualifications/{productQualification}', [ResourceApiController::class, 'productQualification']);
+    Route::get('store-qualifications', [ResourceApiController::class, 'storeQualifications']);
+    Route::post('store-qualifications', [ResourceApiController::class, 'storeStoreQualification']);
+    Route::get('store-qualifications/{storeQualification}', [ResourceApiController::class, 'storeQualification']);
     Route::get('reports/summary', [ResourceApiController::class, 'reportSummary']);
 });

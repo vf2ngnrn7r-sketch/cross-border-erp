@@ -180,6 +180,10 @@ class ErpDemoSeeder extends Seeder
         $this->command?->info('演示账号: admin@example.com / password');
         $this->command?->info('Amazon driver: '.config('amazon.driver'));
         $this->command?->info('商品数: '.Product::query()->where('organization_id', $org->id)->count());
+        $this->command?->info('商品资质: '.\App\Models\ProductQualification::query()->where('organization_id', $org->id)->count()
+            .'（即将过期/已过期 '.\App\Models\ProductQualification::query()->where('organization_id', $org->id)->whereIn('status', ['expiring', 'expired'])->count().'）');
+        $this->command?->info('店铺资质: '.\App\Models\StoreQualification::query()->where('organization_id', $org->id)->count()
+            .'（即将过期/已过期 '.\App\Models\StoreQualification::query()->where('organization_id', $org->id)->whereIn('status', ['expiring', 'expired'])->count().'）');
     }
 
     /** @return array<string, Marketplace> */

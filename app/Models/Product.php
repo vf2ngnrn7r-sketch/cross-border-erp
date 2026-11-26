@@ -83,6 +83,11 @@ class Product extends Model
         return $this->hasMany(Inventory::class);
     }
 
+    public function qualifications(): HasMany
+    {
+        return $this->hasMany(ProductQualification::class);
+    }
+
     public function isParent(): bool
     {
         return $this->product_type === 'parent';

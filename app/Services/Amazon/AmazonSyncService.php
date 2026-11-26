@@ -19,7 +19,9 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductImage;
+use App\Models\ProductQualification;
 use App\Models\ProductReturn;
+use App\Models\StoreQualification;
 use App\Models\ReportRequest;
 use App\Models\Settlement;
 use App\Models\Shipment;
@@ -741,6 +743,121 @@ class AmazonSyncService
         return $job->fresh();
     }
 
+    public function syncProductQualifications(AmazonAccount $account, ?SyncJob $job = null): SyncJob
+    {
+        $job ??= $this->startJob($account, 'product_qualifications');
+        $job->markRunning();
+
+        try {
+            $payload = $this->client->getProductQualifications($account);
+            $count = 0;
+
+            foreach ($payload['qualifications'] ?? [] as $row) {
+                $marketplace = null;
+                if (! empty($row['marketplaceId'])) {
+                    $marketplace = Marketplace::query()->where('code', $row['marketplaceId'])->first();
+                }
+
+                $product = null;
+                if (! empty($row['sku'])) {
+                    $product = Product::query()
+                        ->where('organization_id', $account->organization_id)
+                        ->where('sku', $row['sku'])
+                        ->first();
+                }
+                if (! $product && ! empty($row['asin'])) {
+                    $product = Product::query()
+                        ->where('organization_id', $account->organization_id)
+                        ->where('asin', $row['asin'])
+                        ->first();
+                }
+
+                $externalId = $row['externalId'] ?? ('pq-'.md5(json_encode($row)));
+
+                $record = ProductQualification::query()->updateOrCreate(
+                    [
+                        'organization_id' => $account->organization_id,
+                        'external_id' => $externalId,
+                    ],
+                    [
+                        'product_id' => $product?->id,
+                        'marketplace_id' => $marketplace?->id,
+                        'asin' => $row['asin'] ?? $product?->asin,
+                        'sku' => $row['sku'] ?? $product?->sku,
+                        'qualification_type' => $row['qualificationType'] ?? 'other',
+                        'name' => $row['name'] ?? 'Untitled qualification',
+                        'document_number' => $row['documentNumber'] ?? null,
+                        'issuer' => $row['issuer'] ?? null,
+                        'status' => $row['status'] ?? 'valid',
+                        'issued_at' => isset($row['issuedAt']) ? Carbon::parse($row['issuedAt'])->toDateString() : null,
+                        'expires_at' => isset($row['expiresAt']) ? Carbon::parse($row['expiresAt'])->toDateString() : null,
+                        'file_url' => $row['fileUrl'] ?? null,
+                        'notes' => $row['notes'] ?? null,
+                        'raw' => $row,
+                    ]
+                );
+                $record->refreshExpiryStatus();
+                $count++;
+            }
+
+            $job->markSucceeded(['product_qualifications' => $count]);
+        } catch (\Throwable $e) {
+            $job->markFailed($e->getMessage());
+        }
+
+        return $job->fresh();
+    }
+
+    public function syncStoreQualifications(AmazonAccount $account, ?SyncJob $job = null): SyncJob
+    {
+        $job ??= $this->startJob($account, 'store_qualifications');
+        $job->markRunning();
+
+        try {
+            $payload = $this->client->getStoreQualifications($account);
+            $count = 0;
+
+            foreach ($payload['qualifications'] ?? [] as $row) {
+                $marketplace = null;
+                if (! empty($row['marketplaceId'])) {
+                    $marketplace = Marketplace::query()->where('code', $row['marketplaceId'])->first();
+                }
+
+                $externalId = $row['externalId'] ?? ('sq-'.md5(json_encode($row)));
+
+                $record = StoreQualification::query()->updateOrCreate(
+                    [
+                        'amazon_account_id' => $account->id,
+                        'external_id' => $externalId,
+                    ],
+                    [
+                        'organization_id' => $account->organization_id,
+                        'marketplace_id' => $marketplace?->id,
+                        'qualification_type' => $row['qualificationType'] ?? 'other',
+                        'name' => $row['name'] ?? 'Untitled store qualification',
+                        'brand_name' => $row['brandName'] ?? null,
+                        'category_name' => $row['categoryName'] ?? null,
+                        'document_number' => $row['documentNumber'] ?? null,
+                        'status' => $row['status'] ?? 'approved',
+                        'issued_at' => isset($row['issuedAt']) ? Carbon::parse($row['issuedAt'])->toDateString() : null,
+                        'expires_at' => isset($row['expiresAt']) ? Carbon::parse($row['expiresAt'])->toDateString() : null,
+                        'file_url' => $row['fileUrl'] ?? null,
+                        'notes' => $row['notes'] ?? null,
+                        'raw' => $row,
+                    ]
+                );
+                $record->refreshExpiryStatus();
+                $count++;
+            }
+
+            $job->markSucceeded(['store_qualifications' => $count]);
+        } catch (\Throwable $e) {
+            $job->markFailed($e->getMessage());
+        }
+
+        return $job->fresh();
+    }
+
     public function syncAll(AmazonAccount $account): array
     {
         return DB::transaction(function () use ($account) {
@@ -756,6 +873,8 @@ class AmazonSyncService
                 'returns' => $this->syncReturns($account),
                 'fba_inbound' => $this->syncInboundShipments($account),
                 'messaging' => $this->syncMessaging($account),
+                'product_qualifications' => $this->syncProductQualifications($account),
+                'store_qualifications' => $this->syncStoreQualifications($account),
             ];
         });
     }

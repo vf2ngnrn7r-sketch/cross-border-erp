@@ -1,0 +1,84 @@
+{
+  "payload": {
+    "qualifications": [
+      {
+        "externalId": "PQ-FIX-CE-001",
+        "asin": "B0FIX001AA",
+        "sku": "SKU-EARBUD-BLK",
+        "qualificationType": "ce",
+        "name": "CE Declaration of Conformity — Wireless Earbuds",
+        "documentNumber": "CE-DEMO-2025-8841",
+        "issuer": "Demo Notified Body GmbH",
+        "status": "valid",
+        "issuedAt": "2025-03-01",
+        "expiresAt": "{{now_add_days:400}}",
+        "fileUrl": "https://example.invalid/docs/ce-earbuds.pdf",
+        "marketplaceId": "ATVPDKIKX0DER",
+        "notes": "Covers Black/White/Blue colorways under parent ASIN family"
+      },
+      {
+        "externalId": "PQ-FIX-FCC-001",
+        "asin": "B0FIX001AA",
+        "sku": "SKU-EARBUD-BLK",
+        "qualificationType": "fcc",
+        "name": "FCC ID Grant — Bluetooth Module",
+        "documentNumber": "FCC-ID-2ADEM-EARBUD",
+        "issuer": "FCC OET (fixture)",
+        "status": "expiring",
+        "issuedAt": "2024-04-15",
+        "expiresAt": "{{now_add_days:18}}",
+        "fileUrl": "https://example.invalid/docs/fcc-earbuds.pdf",
+        "marketplaceId": "ATVPDKIKX0DER",
+        "notes": "Renewal due soon — demo expiring credential"
+      },
+      {
+        "externalId": "PQ-FIX-CAT-001",
+        "asin": "B0FIX003CC",
+        "sku": "SKU-BOX-SET",
+        "qualificationType": "category_eligibility",
+        "name": "Storage category eligibility packet",
+        "documentNumber": "CAT-ELIG-BOX-77",
+        "issuer": "Seller Central (fixture)",
+        "status": "valid",
+        "issuedAt": "2025-08-01",
+        "expiresAt": null,
+        "fileUrl": "https://example.invalid/docs/box-set-eligibility.pdf",
+        "marketplaceId": "ATVPDKIKX0DER"
+      },
+      {
+        "externalId": "PQ-FIX-SAFE-001",
+        "asin": "B0FIX002BB",
+        "sku": "SKU-STAND-SLV",
+        "qualificationType": "safety_test",
+        "name": "RoHS / Material Safety Test Report",
+        "documentNumber": "LAB-ROHS-5520",
+        "issuer": "Shenzhen Demo Lab",
+        "status": "expiring",
+        "issuedAt": "2025-01-10",
+        "expiresAt": "{{now_add_days:12}}",
+        "fileUrl": "https://example.invalid/docs/stand-rohs.pdf",
+        "marketplaceId": "ATVPDKIKX0DER",
+        "notes": "Lab report expires within two weeks"
+      },
+      {
+        "externalId": "PQ-FIX-CERT-001",
+        "asin": "B0FIX004DD",
+        "sku": "SKU-CABLE-USB",
+        "qualificationType": "certificate",
+        "name": "USB-IF Compliance Certificate (fixture)",
+        "documentNumber": "USBIF-DEMO-901",
+        "issuer": "USB-IF",
+        "status": "expired",
+        "issuedAt": "2023-06-01",
+        "expiresAt": "{{now_sub_days:40}}",
+        "fileUrl": "https://example.invalid/docs/usb-if-expired.pdf",
+        "marketplaceId": "ATVPDKIKX0DER",
+        "notes": "Expired — listing may stay suppressed until renewed"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "Seller Central product credentials / compliance docs (simulated)",
+    "driver": "fixture"
+  }
+}

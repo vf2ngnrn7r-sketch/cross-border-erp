@@ -58,4 +58,10 @@ interface AmazonSpApiClient
 
     /** Catalog Items（含类目 / 变体 / 图片） */
     public function getCatalogItems(AmazonAccount $account, array $params = []): array;
+
+    /** 商品资质 / 证书 / 类目准入（Seller Central compliance 模拟） */
+    public function getProductQualifications(AmazonAccount $account, array $params = []): array;
+
+    /** 店铺 / 账号资质（Brand Registry、类目批准等） */
+    public function getStoreQualifications(AmazonAccount $account, array $params = []): array;
 }

@@ -9,9 +9,11 @@ use App\Http\Controllers\Admin\ListingController;
 use App\Http\Controllers\Admin\MessagingController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProductQualificationController;
 use App\Http\Controllers\Admin\PurchasingController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ReturnController;
+use App\Http\Controllers\Admin\StoreQualificationController;
 use App\Http\Controllers\Admin\SyncJobController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\ProfileController;
@@ -43,6 +45,9 @@ Route::middleware('auth')->group(function () {
         Route::post('amazon-accounts/{amazonAccount}/sync', [AmazonAccountController::class, 'sync'])->name('amazon-accounts.sync');
 
         Route::resource('products', ProductController::class);
+
+        Route::resource('product-qualifications', ProductQualificationController::class);
+        Route::resource('store-qualifications', StoreQualificationController::class);
 
         Route::get('listings', [ListingController::class, 'index'])->name('listings.index');
         Route::get('listings/{listing}', [ListingController::class, 'show'])->name('listings.show');

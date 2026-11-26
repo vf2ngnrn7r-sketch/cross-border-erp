@@ -53,6 +53,7 @@ class ProductController extends Controller
             'listings.marketplace',
             'listings.amazonAccount',
             'inventories',
+            'qualifications.marketplace',
         ]);
 
         return view('admin.products.show', compact('product'));

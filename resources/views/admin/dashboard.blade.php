@@ -22,6 +22,8 @@
         <div class="erp-card erp-stat"><div class="n">{{ $stats['unread_messages'] }}</div><div class="l">未读消息</div></div>
         <div class="erp-card erp-stat"><div class="n">{{ $stats['open_cases'] }}</div><div class="l">未结 Case</div></div>
         <div class="erp-card erp-stat"><div class="n">{{ $stats['returns'] }}</div><div class="l">退货</div></div>
+        <div class="erp-card erp-stat"><div class="n">{{ $stats['product_quals_expiring'] }}</div><div class="l">商品资质预警</div></div>
+        <div class="erp-card erp-stat"><div class="n">{{ $stats['store_quals_expiring'] }}</div><div class="l">店铺资质预警</div></div>
         <div class="erp-card erp-stat"><div class="n">{{ $stats['sync_pending'] }}</div><div class="l">进行中同步</div></div>
     </div>
 

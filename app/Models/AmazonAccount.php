@@ -67,4 +67,9 @@ class AmazonAccount extends Model
     {
         return $this->hasMany(AdCampaign::class);
     }
+
+    public function storeQualifications(): HasMany
+    {
+        return $this->hasMany(StoreQualification::class);
+    }
 }

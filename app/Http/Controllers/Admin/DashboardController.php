@@ -9,7 +9,9 @@ use App\Models\BuyerMessage;
 use App\Models\Inventory;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductQualification;
 use App\Models\ProductReturn;
+use App\Models\StoreQualification;
 use App\Models\PurchaseOrder;
 use App\Models\Settlement;
 use App\Models\Shipment;
@@ -40,6 +42,10 @@ class DashboardController extends Controller
             'ad_sales' => (float) AdPerformanceMetric::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->sum('sales'),
             'sync_pending' => SyncJob::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))
                 ->whereIn('status', ['pending', 'running'])->count(),
+            'product_quals_expiring' => ProductQualification::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))
+                ->whereIn('status', ['expiring', 'expired'])->count(),
+            'store_quals_expiring' => StoreQualification::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))
+                ->whereIn('status', ['expiring', 'expired'])->count(),
         ];
 
         $recentOrders = Order::query()

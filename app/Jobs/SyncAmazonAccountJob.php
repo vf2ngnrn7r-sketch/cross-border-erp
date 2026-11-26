@@ -15,7 +15,7 @@ class SyncAmazonAccountJob implements ShouldQueue
 
     public function __construct(
         public int $amazonAccountId,
-        public string $scope = 'all' // all|catalog|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging
+        public string $scope = 'all' // all|catalog|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging|product_qualifications|store_qualifications
     ) {}
 
     public function handle(AmazonSyncService $sync): void
@@ -38,6 +38,8 @@ class SyncAmazonAccountJob implements ShouldQueue
             'returns' => $sync->syncReturns($account),
             'fba_inbound' => $sync->syncInboundShipments($account),
             'messaging' => $sync->syncMessaging($account),
+            'product_qualifications' => $sync->syncProductQualifications($account),
+            'store_qualifications' => $sync->syncStoreQualifications($account),
             default => $sync->syncAll($account),
         };
     }

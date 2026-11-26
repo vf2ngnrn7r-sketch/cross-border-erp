@@ -12,7 +12,7 @@ class SyncAmazonDataCommand extends Command
 {
     protected $signature = 'amazon:sync
         {--account= : 指定 amazon_accounts.id}
-        {--scope=all : all|catalog|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging}
+        {--scope=all : all|catalog|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging|product_qualifications|store_qualifications}
         {--queue : 投递到队列而非同步执行}';
 
     protected $description = '同步亚马逊店铺数据（默认 Fixture 驱动，无真实 API）';
@@ -54,6 +54,8 @@ class SyncAmazonDataCommand extends Command
                 'returns' => ['returns' => $sync->syncReturns($account)],
                 'fba_inbound' => ['fba_inbound' => $sync->syncInboundShipments($account)],
                 'messaging' => ['messaging' => $sync->syncMessaging($account)],
+                'product_qualifications' => ['product_qualifications' => $sync->syncProductQualifications($account)],
+                'store_qualifications' => ['store_qualifications' => $sync->syncStoreQualifications($account)],
                 default => $sync->syncAll($account),
             };
 

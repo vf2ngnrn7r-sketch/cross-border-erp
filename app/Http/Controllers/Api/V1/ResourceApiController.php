@@ -12,7 +12,9 @@ use App\Models\Listing;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ProductQualification;
 use App\Models\ProductReturn;
+use App\Models\StoreQualification;
 use App\Models\PurchaseOrder;
 use App\Models\Settlement;
 use App\Models\Shipment;
@@ -182,6 +184,102 @@ class ResourceApiController extends Controller
         return $this->paginate($request, SupportCase::query());
     }
 
+    public function productQualifications(Request $request): JsonResponse
+    {
+        return $this->paginate(
+            $request,
+            ProductQualification::query()->with(['product', 'marketplace'])
+        );
+    }
+
+    public function productQualification(Request $request, ProductQualification $productQualification): JsonResponse
+    {
+        $this->assertOrg($request, $productQualification->organization_id);
+        $productQualification->load(['product', 'marketplace']);
+
+        return response()->json($productQualification);
+    }
+
+    public function storeProductQualification(Request $request): JsonResponse
+    {
+        $org = $request->user()->resolveOrganization();
+        abort_unless($org, 403);
+
+        $data = $request->validate([
+            'product_id' => ['nullable', 'integer', 'exists:products,id'],
+            'marketplace_id' => ['nullable', 'integer', 'exists:marketplaces,id'],
+            'asin' => ['nullable', 'string', 'max:20'],
+            'sku' => ['nullable', 'string', 'max:64'],
+            'qualification_type' => ['required', 'string', 'max:64'],
+            'name' => ['required', 'string', 'max:255'],
+            'document_number' => ['nullable', 'string'],
+            'issuer' => ['nullable', 'string'],
+            'status' => ['nullable', 'string', 'max:32'],
+            'issued_at' => ['nullable', 'date'],
+            'expires_at' => ['nullable', 'date'],
+            'file_url' => ['nullable', 'string'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $record = ProductQualification::query()->create([
+            ...$data,
+            'organization_id' => $org->id,
+            'status' => $data['status'] ?? 'valid',
+        ]);
+        $record->refreshExpiryStatus();
+
+        return response()->json($record->load(['product', 'marketplace']), 201);
+    }
+
+    public function storeQualifications(Request $request): JsonResponse
+    {
+        return $this->paginate(
+            $request,
+            StoreQualification::query()->with(['amazonAccount', 'marketplace'])
+        );
+    }
+
+    public function storeQualification(Request $request, StoreQualification $storeQualification): JsonResponse
+    {
+        $this->assertOrg($request, $storeQualification->organization_id);
+        $storeQualification->load(['amazonAccount', 'marketplace']);
+
+        return response()->json($storeQualification);
+    }
+
+    public function storeStoreQualification(Request $request): JsonResponse
+    {
+        $org = $request->user()->resolveOrganization();
+        abort_unless($org, 403);
+
+        $data = $request->validate([
+            'amazon_account_id' => ['required', 'integer', 'exists:amazon_accounts,id'],
+            'marketplace_id' => ['nullable', 'integer', 'exists:marketplaces,id'],
+            'qualification_type' => ['required', 'string', 'max:64'],
+            'name' => ['required', 'string', 'max:255'],
+            'brand_name' => ['nullable', 'string'],
+            'category_name' => ['nullable', 'string'],
+            'document_number' => ['nullable', 'string'],
+            'status' => ['nullable', 'string', 'max:32'],
+            'issued_at' => ['nullable', 'date'],
+            'expires_at' => ['nullable', 'date'],
+            'file_url' => ['nullable', 'string'],
+            'notes' => ['nullable', 'string'],
+        ]);
+
+        $account = AmazonAccount::query()->findOrFail($data['amazon_account_id']);
+        abort_unless($account->organization_id === $org->id, 403);
+
+        $record = StoreQualification::query()->create([
+            ...$data,
+            'organization_id' => $org->id,
+            'status' => $data['status'] ?? 'approved',
+        ]);
+        $record->refreshExpiryStatus();
+
+        return response()->json($record->load(['amazonAccount', 'marketplace']), 201);
+    }
+
     public function reportSummary(Request $request): JsonResponse
     {
         $org = $request->user()->resolveOrganization();
@@ -194,6 +292,8 @@ class ResourceApiController extends Controller
             'shipments' => Shipment::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->count(),
             'unread_messages' => BuyerMessage::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->where('status', 'unread')->count(),
             'open_cases' => SupportCase::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->whereIn('status', ['open', 'pending'])->count(),
+            'product_qualifications_expiring' => ProductQualification::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->whereIn('status', ['expiring', 'expired'])->count(),
+            'store_qualifications_expiring' => StoreQualification::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->whereIn('status', ['expiring', 'expired'])->count(),
             'ad' => [
                 'cost' => (float) AdPerformanceMetric::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->sum('cost'),
                 'sales' => (float) AdPerformanceMetric::query()->when($orgId, fn ($q) => $q->where('organization_id', $orgId))->sum('sales'),

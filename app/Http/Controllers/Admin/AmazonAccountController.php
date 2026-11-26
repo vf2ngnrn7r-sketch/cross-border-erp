@@ -76,7 +76,12 @@ class AmazonAccountController extends Controller
     public function show(Request $request, AmazonAccount $amazonAccount): View
     {
         $this->authorizeOrg($request, $amazonAccount->organization_id);
-        $amazonAccount->load(['marketplaces', 'credential', 'orders' => fn ($q) => $q->latest()->limit(10)]);
+        $amazonAccount->load([
+            'marketplaces',
+            'credential',
+            'storeQualifications.marketplace',
+            'orders' => fn ($q) => $q->latest()->limit(10),
+        ]);
 
         return view('admin.amazon-accounts.show', compact('amazonAccount'));
     }

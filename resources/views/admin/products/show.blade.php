@@ -102,7 +102,7 @@
 </tbody></table>
 </div>
 
-<div class="erp-card">
+<div class="erp-card" style="margin-bottom:1rem">
 <h2 style="margin-bottom:.75rem">库存挂钩</h2>
 <table class="erp-table">
 <thead><tr><th>SKU</th><th>渠道</th><th>可售</th><th>预留</th><th>在途</th><th>不可售</th></tr></thead>
@@ -115,6 +115,28 @@
 </tr>
 @empty
 <tr><td colspan="6" style="color:#94a3b8">暂无库存记录</td></tr>
+@endforelse
+</tbody></table>
+</div>
+
+<div class="erp-card">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+<h2 style="margin:0">商品资质</h2>
+<a class="erp-btn erp-btn-ghost" href="{{ route('admin.product-qualifications.create', ['product_id' => $product->id]) }}">添加资质</a>
+</div>
+<table class="erp-table">
+<thead><tr><th>名称</th><th>类型</th><th>状态</th><th>到期</th><th></th></tr></thead>
+<tbody>
+@forelse($product->qualifications as $pq)
+<tr>
+<td>{{ $pq->name }}</td>
+<td>{{ $pq->qualification_type }}</td>
+<td>{{ $pq->status }}</td>
+<td>{{ optional($pq->expires_at)->format('Y-m-d') ?? '—' }}</td>
+<td><a style="color:#7dd3fc" href="{{ route('admin.product-qualifications.show', $pq) }}">详情</a></td>
+</tr>
+@empty
+<tr><td colspan="5" style="color:#94a3b8">暂无资质（可同步 product_qualifications 或手动新建）</td></tr>
 @endforelse
 </tbody></table>
 </div>

@@ -273,4 +273,53 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
             '_meta' => ['driver' => 'stub'],
         ];
     }
+
+    public function getProductQualifications(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'qualifications' => [
+                [
+                    'externalId' => 'PQ-STUB-CE-1',
+                    'asin' => 'B0STUB0001',
+                    'sku' => 'SKU-DEMO-001',
+                    'qualificationType' => 'ce',
+                    'name' => 'Stub CE Certificate',
+                    'documentNumber' => 'CE-STUB-1',
+                    'issuer' => 'Stub Lab',
+                    'status' => 'expiring',
+                    'issuedAt' => now()->subYear()->toDateString(),
+                    'expiresAt' => now()->addDays(14)->toDateString(),
+                    'marketplaceId' => 'ATVPDKIKX0DER',
+                ],
+            ],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
+
+    public function getStoreQualifications(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'qualifications' => [
+                [
+                    'externalId' => 'SQ-STUB-BR-1',
+                    'qualificationType' => 'brand_registry',
+                    'name' => 'Stub Brand Registry',
+                    'brandName' => 'DemoBrand',
+                    'status' => 'approved',
+                    'issuedAt' => now()->subMonths(6)->toDateString(),
+                    'expiresAt' => null,
+                ],
+                [
+                    'externalId' => 'SQ-STUB-BL-1',
+                    'qualificationType' => 'business_license',
+                    'name' => 'Stub Business License',
+                    'documentNumber' => 'BL-STUB',
+                    'status' => 'expiring',
+                    'issuedAt' => now()->subYear()->toDateString(),
+                    'expiresAt' => now()->addDays(20)->toDateString(),
+                ],
+            ],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
 }

@@ -20,6 +20,8 @@
 | `messaging/listCases.json` | `getSupportCases` | Case management stubs |
 | `reports/createReport.json` | `createReport` | Reports API |
 | `reports/getReport.json` | `getReport` | Reports API |
+| `qualifications/productQualifications.json` | `getProductQualifications` | 商品证书 / 类目准入（含即将过期） |
+| `qualifications/storeQualifications.json` | `getStoreQualifications` | 店铺 Brand Registry / 类目批准 / 执照 |
 
 采购 / 本地仓等**内部 ERP**数据不走 Amazon fixture，由 Seeder 写入。
 
@@ -30,4 +32,4 @@
 3. `php artisan amazon:sync` 或后台同步 → `AmazonSyncService` 落库。
 4. `php artisan amazon:fixtures:list` 查看文件。
 
-占位符：`{{now}}`、`{{now_sub_hours:N}}`、`{{now_sub_days:N}}`、`{{uuid}}`、`{{account_id}}`、`{{seller_id}}`。
+占位符：`{{now}}`、`{{now_sub_hours:N}}`、`{{now_sub_days:N}}`、`{{now_add_days:N}}`、`{{now_add_hours:N}}`、`{{uuid}}`、`{{account_id}}`、`{{seller_id}}`。

@@ -50,6 +50,8 @@
         <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">经营报表</a>
         <a href="{{ route('admin.amazon-accounts.index') }}" class="{{ request()->routeIs('admin.amazon-accounts.*') ? 'active' : '' }}">亚马逊账号</a>
         <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">商品目录</a>
+        <a href="{{ route('admin.product-qualifications.index') }}" class="{{ request()->routeIs('admin.product-qualifications.*') ? 'active' : '' }}">商品资质</a>
+        <a href="{{ route('admin.store-qualifications.index') }}" class="{{ request()->routeIs('admin.store-qualifications.*') ? 'active' : '' }}">店铺资质</a>
         <a href="{{ route('admin.listings.index') }}" class="{{ request()->routeIs('admin.listings.*') ? 'active' : '' }}">Listing</a>
         <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'active' : '' }}">库存 FBA/FBM</a>
         <a href="{{ route('admin.purchasing.index') }}" class="{{ request()->routeIs('admin.purchasing.*') ? 'active' : '' }}">采购 / 供应商</a>

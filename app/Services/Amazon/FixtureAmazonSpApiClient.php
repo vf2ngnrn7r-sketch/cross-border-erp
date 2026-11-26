@@ -237,4 +237,24 @@ class FixtureAmazonSpApiClient implements AmazonSpApiClient
             '_meta' => ['driver' => 'fixture', 'fixture' => 'advertising/spCampaignMetrics.json'],
         ]);
     }
+
+    public function getProductQualifications(AmazonAccount $account, array $params = []): array
+    {
+        $data = $this->fixtures->load('qualifications/productQualifications.json', $account);
+        $payload = $data['payload'] ?? $data;
+
+        return array_merge($payload, [
+            '_meta' => ['driver' => 'fixture', 'fixture' => 'qualifications/productQualifications.json'],
+        ]);
+    }
+
+    public function getStoreQualifications(AmazonAccount $account, array $params = []): array
+    {
+        $data = $this->fixtures->load('qualifications/storeQualifications.json', $account);
+        $payload = $data['payload'] ?? $data;
+
+        return array_merge($payload, [
+            '_meta' => ['driver' => 'fixture', 'fixture' => 'qualifications/storeQualifications.json'],
+        ]);
+    }
 }
