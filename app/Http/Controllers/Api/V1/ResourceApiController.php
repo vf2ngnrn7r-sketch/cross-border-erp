@@ -11,6 +11,7 @@ use App\Models\Inventory;
 use App\Models\Listing;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use App\Models\ProductReturn;
 use App\Models\PurchaseOrder;
 use App\Models\Settlement;
@@ -29,7 +30,32 @@ class ResourceApiController extends Controller
 {
     public function products(Request $request): JsonResponse
     {
-        return $this->paginate($request, Product::query());
+        return $this->paginate(
+            $request,
+            Product::query()->with(['images', 'children', 'listings'])->withCount('children')
+        );
+    }
+
+    public function product(Request $request, Product $product): JsonResponse
+    {
+        $this->assertOrg($request, $product->organization_id);
+        $product->load(['images', 'children.images', 'listings.marketplace', 'inventories', 'parent']);
+
+        return response()->json($product);
+    }
+
+    public function productVariants(Request $request, Product $product): JsonResponse
+    {
+        $this->assertOrg($request, $product->organization_id);
+
+        return response()->json(
+            $product->children()->with(['images', 'listings', 'inventories'])->get()
+        );
+    }
+
+    public function categories(Request $request): JsonResponse
+    {
+        return $this->paginate($request, ProductCategory::query());
     }
 
     public function storeProduct(Request $request): JsonResponse
@@ -43,16 +69,26 @@ class ResourceApiController extends Controller
             'title' => ['required', 'string', 'max:500'],
             'brand' => ['nullable', 'string'],
             'category' => ['nullable', 'string'],
+            'product_type' => ['nullable', 'in:parent,child,standalone'],
+            'parent_id' => ['nullable', 'integer'],
+            'browse_node_id' => ['nullable', 'string'],
+            'browse_node_name' => ['nullable', 'string'],
+            'amazon_product_type' => ['nullable', 'string'],
+            'default_price' => ['nullable', 'numeric'],
+            'default_cost' => ['nullable', 'numeric'],
+            'main_image_url' => ['nullable', 'string'],
+            'attributes' => ['nullable', 'array'],
             'status' => ['nullable', 'string'],
         ]);
 
         $product = Product::query()->create([
             ...$data,
             'organization_id' => $org->id,
+            'product_type' => $data['product_type'] ?? 'standalone',
             'status' => $data['status'] ?? 'active',
         ]);
 
-        return response()->json($product, 201);
+        return response()->json($product->load('images'), 201);
     }
 
     public function orders(Request $request): JsonResponse
@@ -75,7 +111,15 @@ class ResourceApiController extends Controller
 
     public function listings(Request $request): JsonResponse
     {
-        return $this->paginate($request, Listing::query());
+        return $this->paginate($request, Listing::query()->with(['product', 'marketplace']));
+    }
+
+    public function listing(Request $request, Listing $listing): JsonResponse
+    {
+        $this->assertOrg($request, $listing->organization_id);
+        $listing->load(['product.images', 'marketplace', 'inventories']);
+
+        return response()->json($listing);
     }
 
     public function amazonAccounts(Request $request): JsonResponse

@@ -91,13 +91,25 @@ class FixtureAmazonSpApiClient implements AmazonSpApiClient
             $statuses = $summary['status'] ?? [];
             $channelCode = $offer['fulfillmentChannelCode'] ?? '';
 
+            $primaryStatus = $row['listingStatus']
+                ?? (in_array('SUPPRESSED', $statuses, true) ? 'suppressed'
+                    : (in_array('BUYABLE', $statuses, true) ? 'active' : 'inactive'));
+
             $items[] = [
                 'sku' => $row['sku'] ?? null,
                 'asin' => $summary['asin'] ?? null,
                 'title' => $summary['itemName'] ?? null,
                 'price' => isset($offer['price']['amount']) ? (float) $offer['price']['amount'] : null,
                 'currency' => $offer['price']['currencyCode'] ?? 'USD',
-                'status' => in_array('BUYABLE', $statuses, true) ? 'BUYABLE' : ($statuses[0] ?? 'INACTIVE'),
+                'status' => $primaryStatus,
+                'listing_status' => strtoupper((string) ($statuses[0] ?? $primaryStatus)),
+                'status_flags' => $statuses,
+                'suppress_reason' => $row['suppressReason'] ?? null,
+                'main_image_url' => $summary['mainImage']['link'] ?? null,
+                'amazon_product_type' => $summary['productType'] ?? null,
+                'browse_node_id' => $row['browseNodeId'] ?? null,
+                'attributes' => $row['attributes'] ?? null,
+                'open_date' => $summary['createdDate'] ?? null,
                 'fulfillmentChannel' => $row['fulfillmentChannel']
                     ?? (str_starts_with((string) $channelCode, 'AMAZON') ? 'FBA' : 'FBM'),
                 'marketplaceId' => $summary['marketplaceId'] ?? null,
@@ -176,8 +188,7 @@ class FixtureAmazonSpApiClient implements AmazonSpApiClient
         ]);
     }
 
-    /** Catalog Items 预留读取（当前同步未强制调用） */
-    public function getCatalogItems(AmazonAccount $account): array
+    public function getCatalogItems(AmazonAccount $account, array $params = []): array
     {
         $data = $this->fixtures->load('catalog/getCatalogItem.json', $account);
         $payload = $data['payload'] ?? $data;

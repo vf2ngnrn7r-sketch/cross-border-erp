@@ -20,7 +20,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * 演示种子：组织/用户/店铺 + 内部采购仓配 + Fixture 同步
+ * 演示种子：组织/店铺 + Fixture 目录同步（含父子变体）+ 采购仓配
  */
 class ErpDemoSeeder extends Seeder
 {
@@ -77,21 +77,6 @@ class ErpDemoSeeder extends Seeder
             ]
         );
 
-        $products = [
-            ['sku' => 'SKU-EARBUD-BLK', 'asin' => 'B0FIX001AA', 'title' => 'DemoBrand Wireless Earbuds Pro', 'brand' => 'DemoBrand', 'category' => 'Electronics'],
-            ['sku' => 'SKU-STAND-SLV', 'asin' => 'B0FIX002BB', 'title' => 'DemoBrand Desktop Stand', 'brand' => 'DemoBrand', 'category' => 'Home'],
-            ['sku' => 'SKU-BOX-SET', 'asin' => 'B0FIX003CC', 'title' => 'DemoBrand Storage Box Set', 'brand' => 'DemoBrand', 'category' => 'Home'],
-        ];
-
-        $productMap = [];
-        foreach ($products as $row) {
-            $productMap[$row['sku']] = Product::query()->updateOrCreate(
-                ['organization_id' => $org->id, 'sku' => $row['sku']],
-                [...$row, 'status' => 'active', 'attributes' => ['source' => 'seeder']]
-            );
-        }
-
-        // 内部 ERP：仓库
         $localWh = Warehouse::query()->updateOrCreate(
             ['organization_id' => $org->id, 'code' => 'CN-SZ-01'],
             ['name' => '深圳本地仓', 'type' => 'local', 'country' => 'CN', 'address' => 'Nanshan, Shenzhen', 'status' => 'active']
@@ -101,7 +86,6 @@ class ErpDemoSeeder extends Seeder
             ['name' => 'Amazon FBA NA', 'type' => 'fba', 'country' => 'US', 'address' => 'Amazon FC Network', 'status' => 'active']
         );
 
-        // 内部 ERP：供应商 + 采购单
         $supplier = Supplier::query()->updateOrCreate(
             ['organization_id' => $org->id, 'code' => 'SUP-DG-01'],
             [
@@ -115,6 +99,15 @@ class ErpDemoSeeder extends Seeder
             ]
         );
 
+        // Fixture 全量同步：catalog → listings → inventory → …
+        $results = app(AmazonSyncService::class)->syncAll($account->fresh());
+        foreach ($results as $type => $job) {
+            $this->command?->line("  fixture sync {$type}: {$job->status}");
+        }
+
+        $earbud = Product::query()->where('organization_id', $org->id)->where('sku', 'SKU-EARBUD-BLK')->first();
+        $box = Product::query()->where('organization_id', $org->id)->where('sku', 'SKU-BOX-SET')->first();
+
         $po = PurchaseOrder::query()->updateOrCreate(
             ['organization_id' => $org->id, 'po_number' => 'PO-2026-0001'],
             [
@@ -124,44 +117,40 @@ class ErpDemoSeeder extends Seeder
                 'total_amount' => 1850,
                 'ordered_at' => now()->subDays(12),
                 'expected_at' => now()->addDays(5),
-                'notes' => '耳机 + 收纳盒补货，关联 FBA 入库货件',
+                'notes' => '耳机变体补货 + 收纳盒，关联 FBA 入库',
             ]
         );
 
-        PurchaseOrderItem::query()->updateOrCreate(
-            ['purchase_order_id' => $po->id, 'sku' => 'SKU-EARBUD-BLK'],
-            [
-                'product_id' => $productMap['SKU-EARBUD-BLK']->id,
-                'title' => 'DemoBrand Wireless Earbuds Pro',
-                'quantity' => 200,
-                'received_quantity' => 0,
-                'unit_cost' => 6.50,
-            ]
-        );
-        PurchaseOrderItem::query()->updateOrCreate(
-            ['purchase_order_id' => $po->id, 'sku' => 'SKU-BOX-SET'],
-            [
-                'product_id' => $productMap['SKU-BOX-SET']->id,
-                'title' => 'DemoBrand Storage Box Set',
-                'quantity' => 100,
-                'received_quantity' => 0,
-                'unit_cost' => 5.50,
-            ]
-        );
-
-        // Fixture 同步（含 FBA inbound / messaging / ad metrics）
-        $results = app(AmazonSyncService::class)->syncAll($account->fresh());
-        foreach ($results as $type => $job) {
-            $this->command?->line("  fixture sync {$type}: {$job->status}");
+        if ($earbud) {
+            PurchaseOrderItem::query()->updateOrCreate(
+                ['purchase_order_id' => $po->id, 'sku' => 'SKU-EARBUD-BLK'],
+                [
+                    'product_id' => $earbud->id,
+                    'title' => $earbud->title,
+                    'quantity' => 200,
+                    'received_quantity' => 0,
+                    'unit_cost' => $earbud->default_cost ?? 6.50,
+                ]
+            );
+        }
+        if ($box) {
+            PurchaseOrderItem::query()->updateOrCreate(
+                ['purchase_order_id' => $po->id, 'sku' => 'SKU-BOX-SET'],
+                [
+                    'product_id' => $box->id,
+                    'title' => $box->title,
+                    'quantity' => 100,
+                    'received_quantity' => 0,
+                    'unit_cost' => $box->default_cost ?? 5.50,
+                ]
+            );
         }
 
-        // 将 FBA 入库货件关联到采购单
         Shipment::query()
             ->where('amazon_account_id', $account->id)
             ->where('external_shipment_id', 'FBA15FIX0001')
             ->update(['purchase_order_id' => $po->id, 'warehouse_id' => $localWh->id]);
 
-        // FBM 出库货件（内部演示，绑定 MFN 订单）
         $mfnOrder = Order::query()->where('amazon_order_id', '111-2211990-4455667')->first();
         if ($mfnOrder) {
             $outbound = Shipment::query()->updateOrCreate(
@@ -190,6 +179,7 @@ class ErpDemoSeeder extends Seeder
 
         $this->command?->info('演示账号: admin@example.com / password');
         $this->command?->info('Amazon driver: '.config('amazon.driver'));
+        $this->command?->info('商品数: '.Product::query()->where('organization_id', $org->id)->count());
     }
 
     /** @return array<string, Marketplace> */

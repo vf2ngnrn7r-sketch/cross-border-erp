@@ -245,4 +245,32 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
             '_meta' => ['driver' => 'stub'],
         ];
     }
+
+    public function getCatalogItems(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'items' => [
+                [
+                    'asin' => 'B0STUB0001',
+                    'role' => 'standalone',
+                    'sku' => 'SKU-DEMO-001',
+                    'summaries' => [
+                        [
+                            'marketplaceId' => 'ATVPDKIKX0DER',
+                            'brandName' => 'DemoBrand',
+                            'itemName' => 'Demo Wireless Earbuds',
+                            'browseClassification' => ['displayName' => 'Headphones', 'classificationId' => '172541'],
+                        ],
+                    ],
+                    'productTypes' => [['productType' => 'HEADPHONES']],
+                    'images' => [
+                        ['variant' => 'MAIN', 'link' => 'https://example.invalid/stub-earbud.jpg', 'height' => 500, 'width' => 500],
+                    ],
+                    'listPrice' => ['currencyCode' => 'USD', 'amount' => 29.99],
+                ],
+            ],
+            'categories' => [],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
 }

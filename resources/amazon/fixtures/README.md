@@ -9,8 +9,8 @@
 | `orders/getOrders.json` | `getOrders` | Orders API `getOrders` |
 | `orders/getOrderItems.json` | `getOrderItems` | Orders API `getOrderItems` |
 | `inventory/getInventorySummaries.json` | `getInventory` | FBA Inventory |
-| `listings/searchListingsItems.json` | `getListings` | Listings Items API |
-| `catalog/getCatalogItem.json` | `getCatalogItems` | Catalog Items API |
+| `listings/searchListingsItems.json` | `getListings` | Listings Items API（含 suppressed） |
+| `catalog/getCatalogItem.json` | `getCatalogItems` / `syncCatalog` | Catalog Items + 类目 + 父子变体 + 图片 |
 | `finance/listFinancialEvents.json` | `getFinancialEvents` | Finances API |
 | `advertising/spCampaigns.json` | `getAdCampaigns` | Advertising SP campaigns |
 | `advertising/spCampaignMetrics.json` | `getAdPerformance` | Advertising reporting |

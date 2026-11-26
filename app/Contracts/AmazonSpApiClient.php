@@ -55,4 +55,7 @@ interface AmazonSpApiClient
 
     /** 广告效果报表行 */
     public function getAdPerformance(AmazonAccount $account, array $params = []): array;
+
+    /** Catalog Items（含类目 / 变体 / 图片） */
+    public function getCatalogItems(AmazonAccount $account, array $params = []): array;
 }

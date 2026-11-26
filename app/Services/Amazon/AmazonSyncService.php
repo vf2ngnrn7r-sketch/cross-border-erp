@@ -16,6 +16,9 @@ use App\Models\Listing;
 use App\Models\Marketplace;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductCategory;
+use App\Models\ProductImage;
 use App\Models\ProductReturn;
 use App\Models\ReportRequest;
 use App\Models\Settlement;
@@ -104,6 +107,129 @@ class AmazonSyncService
         return $job->fresh();
     }
 
+    public function syncCatalog(AmazonAccount $account, ?SyncJob $job = null): SyncJob
+    {
+        $job ??= $this->startJob($account, 'catalog');
+        $job->markRunning();
+
+        try {
+            $payload = $this->client->getCatalogItems($account);
+            $orgId = $account->organization_id;
+
+            foreach ($payload['categories'] ?? [] as $cat) {
+                ProductCategory::query()->updateOrCreate(
+                    [
+                        'organization_id' => $orgId,
+                        'browse_node_id' => (string) ($cat['browseNodeId'] ?? $cat['name']),
+                    ],
+                    [
+                        'name' => $cat['name'] ?? 'Unnamed',
+                        'path' => $cat['path'] ?? null,
+                        'amazon_product_type' => $cat['amazonProductType'] ?? null,
+                        'attribute_schema' => $cat['attributeSchema'] ?? null,
+                    ]
+                );
+            }
+
+            // 先写 parent，再写 child / standalone
+            $items = collect($payload['items'] ?? []);
+            $ordered = $items->sortBy(fn ($i) => match ($i['role'] ?? 'standalone') {
+                'parent' => 0,
+                'standalone' => 1,
+                default => 2,
+            });
+
+            $byAsin = [];
+            foreach ($ordered as $row) {
+                $summary = $row['summaries'][0] ?? [];
+                $browse = $summary['browseClassification'] ?? [];
+                $role = $row['role'] ?? 'standalone';
+                $sku = $row['sku'] ?? ('ASIN-'.($row['asin'] ?? uniqid()));
+                $title = $summary['itemName']
+                    ?? ($row['attributes']['item_name'][0]['value'] ?? $sku);
+                $attrs = [];
+                foreach (['color', 'size', 'brand'] as $key) {
+                    if (! empty($row['attributes'][$key][0]['value'])) {
+                        $attrs[$key] = $row['attributes'][$key][0]['value'];
+                    }
+                }
+                if (! empty($row['attributes']['color']['value'] ?? null)) {
+                    $attrs['color'] = $row['attributes']['color']['value'];
+                }
+
+                $parentId = null;
+                if ($role === 'child') {
+                    $parentAsin = $row['parentAsin'] ?? null;
+                    $parentId = $parentAsin && isset($byAsin[$parentAsin])
+                        ? $byAsin[$parentAsin]->id
+                        : Product::query()
+                            ->where('organization_id', $orgId)
+                            ->where('asin', $parentAsin)
+                            ->value('id');
+                }
+
+                $product = Product::query()->updateOrCreate(
+                    ['organization_id' => $orgId, 'sku' => $sku],
+                    [
+                        'parent_id' => $parentId,
+                        'product_type' => $role === 'parent' ? 'parent' : ($role === 'child' ? 'child' : 'standalone'),
+                        'parent_sku' => $row['parentSku'] ?? null,
+                        'asin' => $row['asin'] ?? null,
+                        'parent_asin' => $row['parentAsin'] ?? null,
+                        'title' => $title,
+                        'brand' => $summary['brandName']
+                            ?? ($row['attributes']['brand'][0]['value'] ?? null),
+                        'category' => $browse['displayName'] ?? null,
+                        'browse_node_id' => $browse['classificationId'] ?? null,
+                        'browse_node_name' => $browse['displayName'] ?? null,
+                        'amazon_product_type' => $row['productTypes'][0]['productType'] ?? null,
+                        'description' => $row['description'] ?? null,
+                        'bullet_points' => $row['bulletPoints'] ?? null,
+                        'variation_theme' => isset($row['attributes']['variation_theme'][0]['name'])
+                            ? [$row['attributes']['variation_theme'][0]['name']]
+                            : null,
+                        'attributes' => $attrs ?: ($row['attributes'] ?? null),
+                        'main_image_url' => $row['images'][0]['link'] ?? null,
+                        'default_cost' => $row['cost'] ?? null,
+                        'default_price' => $row['listPrice']['amount'] ?? null,
+                        'default_currency' => $row['listPrice']['currencyCode'] ?? 'USD',
+                        'status' => $role === 'parent' ? 'active' : 'active',
+                    ]
+                );
+
+                if (! empty($row['asin'])) {
+                    $byAsin[$row['asin']] = $product;
+                }
+
+                foreach ($row['images'] ?? [] as $i => $img) {
+                    ProductImage::query()->updateOrCreate(
+                        [
+                            'product_id' => $product->id,
+                            'url' => $img['link'],
+                        ],
+                        [
+                            'organization_id' => $orgId,
+                            'variant' => $img['variant'] ?? null,
+                            'position' => $i,
+                            'width' => $img['width'] ?? null,
+                            'height' => $img['height'] ?? null,
+                            'is_main' => ($img['variant'] ?? '') === 'MAIN' || $i === 0,
+                        ]
+                    );
+                }
+            }
+
+            $job->markSucceeded([
+                'products' => $ordered->count(),
+                'categories' => count($payload['categories'] ?? []),
+            ]);
+        } catch (\Throwable $e) {
+            $job->markFailed($e->getMessage());
+        }
+
+        return $job->fresh();
+    }
+
     public function syncInventory(AmazonAccount $account, ?SyncJob $job = null): SyncJob
     {
         $job ??= $this->startJob($account, 'inventory');
@@ -114,7 +240,17 @@ class AmazonSyncService
             $marketplace = $account->marketplaces()->first();
 
             foreach ($payload['inventorySummaries'] ?? [] as $row) {
-                Inventory::query()->updateOrCreate(
+                $product = Product::query()
+                    ->where('organization_id', $account->organization_id)
+                    ->where('sku', $row['sellerSku'])
+                    ->first();
+
+                $listing = Listing::query()
+                    ->where('amazon_account_id', $account->id)
+                    ->where('seller_sku', $row['sellerSku'])
+                    ->first();
+
+                $inv = Inventory::query()->updateOrCreate(
                     [
                         'amazon_account_id' => $account->id,
                         'sku' => $row['sellerSku'],
@@ -123,6 +259,8 @@ class AmazonSyncService
                     [
                         'organization_id' => $account->organization_id,
                         'marketplace_id' => $marketplace?->id,
+                        'listing_id' => $listing?->id,
+                        'product_id' => $product?->id,
                         'asin' => $row['asin'] ?? null,
                         'quantity_available' => (int) ($row['totalQuantity'] ?? 0),
                         'quantity_inbound' => (int) ($row['inboundQuantity'] ?? 0),
@@ -132,6 +270,10 @@ class AmazonSyncService
                         'synced_at' => now(),
                     ]
                 );
+
+                if ($listing) {
+                    $listing->forceFill(['quantity' => (int) $inv->quantity_available])->save();
+                }
             }
 
             $job->markSucceeded(['rows' => count($payload['inventorySummaries'] ?? [])]);
@@ -153,6 +295,20 @@ class AmazonSyncService
                 ?? Marketplace::query()->where('code', 'ATVPDKIKX0DER')->first();
 
             foreach ($payload['items'] ?? [] as $row) {
+                $product = Product::query()
+                    ->where('organization_id', $account->organization_id)
+                    ->where('sku', $row['sku'])
+                    ->first();
+
+                $status = $row['status'] ?? 'inactive';
+                if (in_array(strtolower((string) $status), ['buyable', 'active'], true)) {
+                    $status = 'active';
+                } elseif (strtolower((string) $status) === 'suppressed') {
+                    $status = 'suppressed';
+                } else {
+                    $status = 'inactive';
+                }
+
                 Listing::query()->updateOrCreate(
                     [
                         'amazon_account_id' => $account->id,
@@ -161,12 +317,27 @@ class AmazonSyncService
                     ],
                     [
                         'organization_id' => $account->organization_id,
+                        'product_id' => $product?->id,
                         'asin' => $row['asin'] ?? null,
                         'title' => $row['title'] ?? null,
-                        'price' => $row['price'] ?? null,
+                        'price' => $row['price'] ?? $product?->default_price,
                         'currency' => $row['currency'] ?? 'USD',
                         'fulfillment_channel' => $row['fulfillmentChannel'] ?? 'FBA',
-                        'status' => ($row['status'] ?? '') === 'BUYABLE' ? 'active' : 'inactive',
+                        'status' => $status,
+                        'listing_status' => $row['listing_status'] ?? strtoupper($status),
+                        'suppress_reason' => $row['suppress_reason'] ?? null,
+                        'status_flags' => $row['status_flags'] ?? null,
+                        'main_image_url' => $row['main_image_url'] ?? $product?->main_image_url,
+                        'amazon_product_type' => $row['amazon_product_type'] ?? $product?->amazon_product_type,
+                        'browse_node_id' => $row['browse_node_id'] ?? $product?->browse_node_id,
+                        'attributes' => $row['attributes'] ?? $product?->attributes,
+                        'open_date' => $row['open_date'] ?? null,
+                        'quantity' => $product
+                            ? (int) Inventory::query()
+                                ->where('amazon_account_id', $account->id)
+                                ->where('sku', $row['sku'])
+                                ->sum('quantity_available')
+                            : null,
                         'synced_at' => now(),
                     ]
                 );
@@ -573,10 +744,12 @@ class AmazonSyncService
     public function syncAll(AmazonAccount $account): array
     {
         return DB::transaction(function () use ($account) {
+            // catalog 先于 listings/inventory，便于关联 product_id / quantity
             return [
-                'orders' => $this->syncOrders($account),
-                'inventory' => $this->syncInventory($account),
+                'catalog' => $this->syncCatalog($account),
                 'listings' => $this->syncListings($account),
+                'inventory' => $this->syncInventory($account),
+                'orders' => $this->syncOrders($account),
                 'finance' => $this->syncFinance($account),
                 'ads' => $this->syncAdvertising($account),
                 'ad_metrics' => $this->syncAdPerformance($account),

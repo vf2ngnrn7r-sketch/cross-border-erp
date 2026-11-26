@@ -10,7 +10,7 @@
 |------|------|
 | 认证 / 多租户 | Laravel Breeze；`organizations` + `organization_user`；用户 `current_organization_id` |
 | 亚马逊账号 | 店铺、站点（marketplace）、SP-API 凭证绑定（加密字段 + 占位符） |
-| 商品 / Listing | 商品主数据与站点 Listing CRUD / 列表 |
+| 商品管理 | 主数据、父子变体、Browse Node、图片、属性；Listing 按站点状态；库存数量挂钩 |
 | 库存 | FBA / FBM 数量字段与同步落库 |
 | 订单 | 订单、订单行、履约状态 |
 | 财务 | 结算单、费用/财务事件（经 Fixture 同步） |

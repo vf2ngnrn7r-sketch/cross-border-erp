@@ -14,6 +14,7 @@ class Inventory extends Model
         'organization_id',
         'amazon_account_id',
         'listing_id',
+        'product_id',
         'marketplace_id',
         'sku',
         'asin',
@@ -46,6 +47,11 @@ class Inventory extends Model
     public function listing(): BelongsTo
     {
         return $this->belongsTo(Listing::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 
     public function marketplace(): BelongsTo

@@ -2,7 +2,7 @@
 @section('title', '编辑商品')
 @section('content')
 <h1 style="font-size:1.4rem;margin-bottom:1rem">编辑商品</h1>
-<div class="erp-card" style="max-width:640px">
+<div class="erp-card" style="max-width:720px">
 <form method="POST" action="{{ route('admin.products.update', $product) }}">@csrf @method('PUT')
 @include('admin.products._form', ['product' => $product])
 <button class="erp-btn" type="submit">保存</button>

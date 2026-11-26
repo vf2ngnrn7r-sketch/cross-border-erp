@@ -15,6 +15,7 @@ class ListingController extends Controller
         $listings = Listing::query()
             ->with(['amazonAccount', 'marketplace', 'product'])
             ->when($org, fn ($q) => $q->where('organization_id', $org->id))
+            ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->when($request->q, fn ($q) => $q->where(function ($qq) use ($request) {
                 $qq->where('seller_sku', 'like', '%'.$request->q.'%')
                     ->orWhere('asin', 'like', '%'.$request->q.'%')
@@ -25,5 +26,14 @@ class ListingController extends Controller
             ->withQueryString();
 
         return view('admin.listings.index', compact('listings', 'org'));
+    }
+
+    public function show(Request $request, Listing $listing): View
+    {
+        $org = $request->user()->resolveOrganization();
+        abort_unless($org && $org->id === $listing->organization_id, 403);
+        $listing->load(['product.images', 'marketplace', 'amazonAccount', 'inventories']);
+
+        return view('admin.listings.show', compact('listing'));
     }
 }

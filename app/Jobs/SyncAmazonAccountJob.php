@@ -15,7 +15,7 @@ class SyncAmazonAccountJob implements ShouldQueue
 
     public function __construct(
         public int $amazonAccountId,
-        public string $scope = 'all' // all|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging
+        public string $scope = 'all' // all|catalog|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging
     ) {}
 
     public function handle(AmazonSyncService $sync): void
@@ -28,6 +28,7 @@ class SyncAmazonAccountJob implements ShouldQueue
         }
 
         match ($this->scope) {
+            'catalog' => $sync->syncCatalog($account),
             'orders' => $sync->syncOrders($account),
             'inventory' => $sync->syncInventory($account),
             'listings' => $sync->syncListings($account),

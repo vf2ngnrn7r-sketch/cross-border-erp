@@ -19,10 +19,14 @@ Route::prefix('v1')->group(function () {
 Route::middleware('web', 'auth')->prefix('v1')->group(function () {
     Route::get('products', [ResourceApiController::class, 'products']);
     Route::post('products', [ResourceApiController::class, 'storeProduct']);
+    Route::get('products/{product}', [ResourceApiController::class, 'product']);
+    Route::get('products/{product}/variants', [ResourceApiController::class, 'productVariants']);
+    Route::get('categories', [ResourceApiController::class, 'categories']);
     Route::get('orders', [ResourceApiController::class, 'orders']);
     Route::get('orders/{order}', [ResourceApiController::class, 'order']);
     Route::get('inventories', [ResourceApiController::class, 'inventories']);
     Route::get('listings', [ResourceApiController::class, 'listings']);
+    Route::get('listings/{listing}', [ResourceApiController::class, 'listing']);
     Route::get('amazon-accounts', [ResourceApiController::class, 'amazonAccounts']);
     Route::get('settlements', [ResourceApiController::class, 'settlements']);
     Route::get('campaigns', [ResourceApiController::class, 'campaigns']);

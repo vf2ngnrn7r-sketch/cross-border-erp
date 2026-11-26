@@ -42,9 +42,10 @@ Route::middleware('auth')->group(function () {
         Route::get('amazon-accounts/{amazonAccount}', [AmazonAccountController::class, 'show'])->name('amazon-accounts.show');
         Route::post('amazon-accounts/{amazonAccount}/sync', [AmazonAccountController::class, 'sync'])->name('amazon-accounts.sync');
 
-        Route::resource('products', ProductController::class)->except(['show']);
+        Route::resource('products', ProductController::class);
 
         Route::get('listings', [ListingController::class, 'index'])->name('listings.index');
+        Route::get('listings/{listing}', [ListingController::class, 'show'])->name('listings.show');
         Route::get('inventories', [InventoryController::class, 'index'])->name('inventories.index');
 
         Route::get('purchasing', [PurchasingController::class, 'index'])->name('purchasing.index');

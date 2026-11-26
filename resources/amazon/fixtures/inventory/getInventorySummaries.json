@@ -11,28 +11,49 @@
         "sellerSku": "SKU-EARBUD-BLK",
         "condition": "NewItem",
         "fulfillmentChannel": "FBA",
-        "productName": "DemoBrand Wireless Earbuds Pro",
+        "productName": "DemoBrand Wireless Earbuds Pro - Black",
         "totalQuantity": 186,
         "inventoryDetails": {
           "fulfillableQuantity": 160,
           "inboundWorkingQuantity": 10,
           "inboundShippedQuantity": 12,
           "inboundReceivingQuantity": 0,
-          "reservedQuantity": {
-            "totalReservedQuantity": 8,
-            "pendingCustomerOrderQuantity": 5,
-            "pendingTransshipmentQuantity": 2,
-            "fcProcessingQuantity": 1
-          },
-          "unfulfillableQuantity": {
-            "totalUnfulfillableQuantity": 6,
-            "customerDamagedQuantity": 2,
-            "warehouseDamagedQuantity": 3,
-            "distributorDamagedQuantity": 0,
-            "carrierDamagedQuantity": 0,
-            "defectiveQuantity": 1,
-            "expiredQuantity": 0
-          }
+          "reservedQuantity": { "totalReservedQuantity": 8 },
+          "unfulfillableQuantity": { "totalUnfulfillableQuantity": 6 }
+        }
+      },
+      {
+        "asin": "B0FIX001AB",
+        "fnSku": "X00FIX001AB",
+        "sellerSku": "SKU-EARBUD-WHT",
+        "condition": "NewItem",
+        "fulfillmentChannel": "FBA",
+        "productName": "DemoBrand Wireless Earbuds Pro - White",
+        "totalQuantity": 95,
+        "inventoryDetails": {
+          "fulfillableQuantity": 88,
+          "inboundWorkingQuantity": 0,
+          "inboundShippedQuantity": 5,
+          "inboundReceivingQuantity": 0,
+          "reservedQuantity": { "totalReservedQuantity": 2 },
+          "unfulfillableQuantity": { "totalUnfulfillableQuantity": 0 }
+        }
+      },
+      {
+        "asin": "B0FIX001AC",
+        "fnSku": "X00FIX001AC",
+        "sellerSku": "SKU-EARBUD-BLU",
+        "condition": "NewItem",
+        "fulfillmentChannel": "FBA",
+        "productName": "DemoBrand Wireless Earbuds Pro - Blue",
+        "totalQuantity": 40,
+        "inventoryDetails": {
+          "fulfillableQuantity": 40,
+          "inboundWorkingQuantity": 0,
+          "inboundShippedQuantity": 0,
+          "inboundReceivingQuantity": 0,
+          "reservedQuantity": { "totalReservedQuantity": 0 },
+          "unfulfillableQuantity": { "totalUnfulfillableQuantity": 0 }
         }
       },
       {
@@ -67,6 +88,23 @@
           "inboundReceivingQuantity": 0,
           "reservedQuantity": { "totalReservedQuantity": 3 },
           "unfulfillableQuantity": { "totalUnfulfillableQuantity": 1 }
+        }
+      },
+      {
+        "asin": "B0FIX004DD",
+        "fnSku": "X00FIX004DD",
+        "sellerSku": "SKU-CABLE-USB",
+        "condition": "NewItem",
+        "fulfillmentChannel": "FBA",
+        "productName": "DemoBrand USB-C Cable 6ft",
+        "totalQuantity": 220,
+        "inventoryDetails": {
+          "fulfillableQuantity": 200,
+          "inboundWorkingQuantity": 20,
+          "inboundShippedQuantity": 0,
+          "inboundReceivingQuantity": 0,
+          "reservedQuantity": { "totalReservedQuantity": 0 },
+          "unfulfillableQuantity": { "totalUnfulfillableQuantity": 0 }
         }
       }
     ]
