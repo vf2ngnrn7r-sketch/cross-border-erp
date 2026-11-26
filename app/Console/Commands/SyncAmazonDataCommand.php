@@ -12,7 +12,7 @@ class SyncAmazonDataCommand extends Command
 {
     protected $signature = 'amazon:sync
         {--account= : 指定 amazon_accounts.id}
-        {--scope=all : all|orders|inventory|listings|finance|ads|returns}
+        {--scope=all : all|orders|inventory|listings|finance|ads|ad_metrics|returns|fba_inbound|messaging}
         {--queue : 投递到队列而非同步执行}';
 
     protected $description = '同步亚马逊店铺数据（默认 Fixture 驱动，无真实 API）';
@@ -49,7 +49,10 @@ class SyncAmazonDataCommand extends Command
                 'listings' => ['listings' => $sync->syncListings($account)],
                 'finance' => ['finance' => $sync->syncFinance($account)],
                 'ads' => ['ads' => $sync->syncAdvertising($account)],
+                'ad_metrics' => ['ad_metrics' => $sync->syncAdPerformance($account)],
                 'returns' => ['returns' => $sync->syncReturns($account)],
+                'fba_inbound' => ['fba_inbound' => $sync->syncInboundShipments($account)],
+                'messaging' => ['messaging' => $sync->syncMessaging($account)],
                 default => $sync->syncAll($account),
             };
 

@@ -186,4 +186,44 @@ class FixtureAmazonSpApiClient implements AmazonSpApiClient
             '_meta' => ['driver' => 'fixture', 'fixture' => 'catalog/getCatalogItem.json'],
         ]);
     }
+
+    public function getInboundShipments(AmazonAccount $account, array $params = []): array
+    {
+        $data = $this->fixtures->load('fba/inboundShipments.json', $account);
+        $payload = $data['payload'] ?? $data;
+
+        return array_merge($payload, [
+            '_meta' => ['driver' => 'fixture', 'fixture' => 'fba/inboundShipments.json'],
+        ]);
+    }
+
+    public function getBuyerMessages(AmazonAccount $account, array $params = []): array
+    {
+        $data = $this->fixtures->load('messaging/listMessages.json', $account);
+        $payload = $data['payload'] ?? $data;
+
+        return array_merge($payload, [
+            '_meta' => ['driver' => 'fixture', 'fixture' => 'messaging/listMessages.json'],
+        ]);
+    }
+
+    public function getSupportCases(AmazonAccount $account, array $params = []): array
+    {
+        $data = $this->fixtures->load('messaging/listCases.json', $account);
+        $payload = $data['payload'] ?? $data;
+
+        return array_merge($payload, [
+            '_meta' => ['driver' => 'fixture', 'fixture' => 'messaging/listCases.json'],
+        ]);
+    }
+
+    public function getAdPerformance(AmazonAccount $account, array $params = []): array
+    {
+        $data = $this->fixtures->load('advertising/spCampaignMetrics.json', $account);
+        $payload = $data['payload'] ?? $data;
+
+        return array_merge($payload, [
+            '_meta' => ['driver' => 'fixture', 'fixture' => 'advertising/spCampaignMetrics.json'],
+        ]);
+    }
 }

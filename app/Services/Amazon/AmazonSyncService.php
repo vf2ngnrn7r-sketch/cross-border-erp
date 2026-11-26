@@ -5,8 +5,10 @@ namespace App\Services\Amazon;
 use App\Contracts\AmazonSpApiClient;
 use App\Models\AdCampaign;
 use App\Models\AdGroup;
+use App\Models\AdPerformanceMetric;
 use App\Models\AmazonAccount;
 use App\Models\AToZClaim;
+use App\Models\BuyerMessage;
 use App\Models\CustomerFeedback;
 use App\Models\FinancialEvent;
 use App\Models\Inventory;
@@ -17,7 +19,12 @@ use App\Models\OrderItem;
 use App\Models\ProductReturn;
 use App\Models\ReportRequest;
 use App\Models\Settlement;
+use App\Models\Shipment;
+use App\Models\ShipmentItem;
+use App\Models\SupportCase;
 use App\Models\SyncJob;
+use App\Models\Warehouse;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -354,6 +361,187 @@ class AmazonSyncService
         return $job->fresh();
     }
 
+    public function syncInboundShipments(AmazonAccount $account, ?SyncJob $job = null): SyncJob
+    {
+        $job ??= $this->startJob($account, 'fba_inbound');
+        $job->markRunning();
+
+        try {
+            $payload = $this->client->getInboundShipments($account);
+            $warehouse = Warehouse::query()
+                ->where('organization_id', $account->organization_id)
+                ->where('type', 'fba')
+                ->first()
+                ?? Warehouse::query()->where('organization_id', $account->organization_id)->first();
+
+            $count = 0;
+            foreach ($payload['ShipmentData'] ?? [] as $row) {
+                $shipment = Shipment::query()->updateOrCreate(
+                    [
+                        'amazon_account_id' => $account->id,
+                        'external_shipment_id' => $row['ShipmentId'],
+                    ],
+                    [
+                        'organization_id' => $account->organization_id,
+                        'warehouse_id' => $warehouse?->id,
+                        'shipment_type' => 'fba_inbound',
+                        'reference' => $row['ShipmentName'] ?? null,
+                        'status' => $row['ShipmentStatus'] ?? 'WORKING',
+                        'carrier' => $row['Carrier'] ?? null,
+                        'tracking_number' => $row['TrackingId'] ?? null,
+                        'destination_fulfillment_center' => $row['DestinationFulfillmentCenterId'] ?? null,
+                        'shipped_at' => $row['ShipDate'] ?? null,
+                        'expected_arrival' => $row['EstimatedArrival'] ?? null,
+                        'delivered_at' => ($row['ShipmentStatus'] ?? '') === 'CLOSED' ? ($row['EstimatedArrival'] ?? now()) : null,
+                        'raw' => $row,
+                    ]
+                );
+
+                foreach ($row['ItemData'] ?? [] as $item) {
+                    ShipmentItem::query()->updateOrCreate(
+                        [
+                            'shipment_id' => $shipment->id,
+                            'sku' => $item['SellerSKU'],
+                        ],
+                        [
+                            'asin' => $item['ASIN'] ?? null,
+                            'fnsku' => $item['FulfillmentNetworkSKU'] ?? null,
+                            'quantity' => $item['QuantityShipped'] ?? 0,
+                            'quantity_received' => $item['QuantityReceived'] ?? 0,
+                        ]
+                    );
+                }
+                $count++;
+            }
+
+            $job->markSucceeded(['shipments' => $count]);
+        } catch (\Throwable $e) {
+            $job->markFailed($e->getMessage());
+        }
+
+        return $job->fresh();
+    }
+
+    public function syncMessaging(AmazonAccount $account, ?SyncJob $job = null): SyncJob
+    {
+        $job ??= $this->startJob($account, 'messaging');
+        $job->markRunning();
+
+        try {
+            $messages = $this->client->getBuyerMessages($account);
+            $cases = $this->client->getSupportCases($account);
+            $msgCount = 0;
+            $caseCount = 0;
+
+            foreach ($messages['messages'] ?? [] as $row) {
+                $orderId = null;
+                if (! empty($row['amazonOrderId'])) {
+                    $orderId = Order::query()->where('amazon_order_id', $row['amazonOrderId'])->value('id');
+                }
+
+                BuyerMessage::query()->updateOrCreate(
+                    [
+                        'amazon_account_id' => $account->id,
+                        'external_message_id' => $row['messageId'],
+                    ],
+                    [
+                        'organization_id' => $account->organization_id,
+                        'order_id' => $orderId,
+                        'amazon_order_id' => $row['amazonOrderId'] ?? null,
+                        'subject' => $row['subject'] ?? null,
+                        'body' => $row['body'] ?? null,
+                        'direction' => $row['direction'] ?? 'inbound',
+                        'status' => $row['status'] ?? 'unread',
+                        'sent_at' => $row['sentAt'] ?? null,
+                    ]
+                );
+                $msgCount++;
+            }
+
+            foreach ($cases['cases'] ?? [] as $row) {
+                $orderId = null;
+                if (! empty($row['amazonOrderId'])) {
+                    $orderId = Order::query()->where('amazon_order_id', $row['amazonOrderId'])->value('id');
+                }
+
+                SupportCase::query()->updateOrCreate(
+                    [
+                        'amazon_account_id' => $account->id,
+                        'case_id' => $row['caseId'],
+                    ],
+                    [
+                        'organization_id' => $account->organization_id,
+                        'order_id' => $orderId,
+                        'case_type' => $row['caseType'] ?? null,
+                        'status' => $row['status'] ?? 'open',
+                        'subject' => $row['subject'] ?? null,
+                        'description' => $row['description'] ?? null,
+                        'opened_at' => $row['openedAt'] ?? null,
+                        'closed_at' => $row['closedAt'] ?? null,
+                    ]
+                );
+                $caseCount++;
+            }
+
+            $job->markSucceeded(['messages' => $msgCount, 'cases' => $caseCount]);
+        } catch (\Throwable $e) {
+            $job->markFailed($e->getMessage());
+        }
+
+        return $job->fresh();
+    }
+
+    public function syncAdPerformance(AmazonAccount $account, ?SyncJob $job = null): SyncJob
+    {
+        $job ??= $this->startJob($account, 'ad_metrics');
+        $job->markRunning();
+
+        try {
+            $payload = $this->client->getAdPerformance($account);
+            $currency = $payload['currency'] ?? 'USD';
+            $count = 0;
+
+            foreach ($payload['rows'] ?? [] as $row) {
+                $campaignId = (string) ($row['campaignId'] ?? '');
+                $campaign = AdCampaign::query()
+                    ->where('organization_id', $account->organization_id)
+                    ->where('external_campaign_id', $campaignId)
+                    ->first();
+
+                $cost = (float) ($row['cost'] ?? 0);
+                $sales = (float) ($row['attributedSales14d'] ?? $row['sales'] ?? 0);
+                $date = Carbon::parse($row['date'])->toDateString();
+
+                AdPerformanceMetric::query()->updateOrCreate(
+                    [
+                        'amazon_account_id' => $account->id,
+                        'external_campaign_id' => $campaignId,
+                        'report_date' => $date,
+                    ],
+                    [
+                        'organization_id' => $account->organization_id,
+                        'ad_campaign_id' => $campaign?->id,
+                        'impressions' => (int) ($row['impressions'] ?? 0),
+                        'clicks' => (int) ($row['clicks'] ?? 0),
+                        'cost' => $cost,
+                        'sales' => $sales,
+                        'orders' => (int) ($row['attributedConversions14d'] ?? $row['orders'] ?? 0),
+                        'acos' => $sales > 0 ? round($cost / $sales, 4) : null,
+                        'roas' => $cost > 0 ? round($sales / $cost, 4) : null,
+                        'currency' => $currency,
+                    ]
+                );
+                $count++;
+            }
+
+            $job->markSucceeded(['rows' => $count]);
+        } catch (\Throwable $e) {
+            $job->markFailed($e->getMessage());
+        }
+
+        return $job->fresh();
+    }
+
     public function requestReport(AmazonAccount $account, string $reportType, array $options = []): SyncJob
     {
         $job = $this->startJob($account, 'reports', $reportType);
@@ -391,7 +579,10 @@ class AmazonSyncService
                 'listings' => $this->syncListings($account),
                 'finance' => $this->syncFinance($account),
                 'ads' => $this->syncAdvertising($account),
+                'ad_metrics' => $this->syncAdPerformance($account),
                 'returns' => $this->syncReturns($account),
+                'fba_inbound' => $this->syncInboundShipments($account),
+                'messaging' => $this->syncMessaging($account),
             ];
         });
     }

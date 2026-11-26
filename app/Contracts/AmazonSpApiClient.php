@@ -43,4 +43,16 @@ interface AmazonSpApiClient
 
     /** 拉取退货（可含 A-Z / 反馈组合模拟数据） */
     public function getReturns(AmazonAccount $account, array $params = []): array;
+
+    /** FBA 入库货件 */
+    public function getInboundShipments(AmazonAccount $account, array $params = []): array;
+
+    /** 买家-卖家消息 */
+    public function getBuyerMessages(AmazonAccount $account, array $params = []): array;
+
+    /** 客服 / 账号 Case */
+    public function getSupportCases(AmazonAccount $account, array $params = []): array;
+
+    /** 广告效果报表行 */
+    public function getAdPerformance(AmazonAccount $account, array $params = []): array;
 }

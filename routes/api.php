@@ -4,10 +4,7 @@ use App\Http\Controllers\Api\V1\ResourceApiController;
 use Illuminate\Support\Facades\Route;
 
 /**
- * JSON API
- * 说明：默认 api 中间件不含 session。本脚手架同时在 web.php 挂载了
- * /api/v1/*（auth session）便于本地演示；此处提供无状态入口占位，
- * 后续可接入 Sanctum / Passport token。
+ * JSON API — session auth for local demo; Sanctum can replace later.
  */
 Route::prefix('v1')->group(function () {
     Route::get('health', fn () => response()->json([
@@ -19,7 +16,6 @@ Route::prefix('v1')->group(function () {
     ]));
 });
 
-// 若已登录（例如通过 stateful 客户端），可使用下列路由
 Route::middleware('web', 'auth')->prefix('v1')->group(function () {
     Route::get('products', [ResourceApiController::class, 'products']);
     Route::post('products', [ResourceApiController::class, 'storeProduct']);
@@ -30,6 +26,14 @@ Route::middleware('web', 'auth')->prefix('v1')->group(function () {
     Route::get('amazon-accounts', [ResourceApiController::class, 'amazonAccounts']);
     Route::get('settlements', [ResourceApiController::class, 'settlements']);
     Route::get('campaigns', [ResourceApiController::class, 'campaigns']);
+    Route::get('ad-metrics', [ResourceApiController::class, 'adMetrics']);
     Route::get('returns', [ResourceApiController::class, 'returns']);
     Route::get('sync-jobs', [ResourceApiController::class, 'syncJobs']);
+    Route::get('suppliers', [ResourceApiController::class, 'suppliers']);
+    Route::get('purchase-orders', [ResourceApiController::class, 'purchaseOrders']);
+    Route::get('warehouses', [ResourceApiController::class, 'warehouses']);
+    Route::get('shipments', [ResourceApiController::class, 'shipments']);
+    Route::get('messages', [ResourceApiController::class, 'messages']);
+    Route::get('cases', [ResourceApiController::class, 'cases']);
+    Route::get('reports/summary', [ResourceApiController::class, 'reportSummary']);
 });

@@ -1,0 +1,37 @@
+{
+  "payload": {
+    "messages": [
+      {
+        "messageId": "MSG-FIX-1001",
+        "amazonOrderId": "111-7845123-9988776",
+        "subject": "Question about delivery time",
+        "body": "Hi, when will my order arrive? Tracking hasn't updated.",
+        "direction": "inbound",
+        "status": "unread",
+        "sentAt": "{{now_sub_hours:14}}"
+      },
+      {
+        "messageId": "MSG-FIX-1002",
+        "amazonOrderId": "111-7845123-9988776",
+        "subject": "Re: Question about delivery time",
+        "body": "Hello, your package is with the carrier and ETA is tomorrow. Thank you for your patience.",
+        "direction": "outbound",
+        "status": "replied",
+        "sentAt": "{{now_sub_hours:10}}"
+      },
+      {
+        "messageId": "MSG-FIX-1003",
+        "amazonOrderId": "111-2211990-4455667",
+        "subject": "Wrong color received",
+        "body": "I ordered silver but received black. Can you help?",
+        "direction": "inbound",
+        "status": "unread",
+        "sentAt": "{{now_sub_hours:4}}"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "Messaging.getMessagingActionsForOrder / buyer-seller messages",
+    "driver": "fixture"
+  }
+}

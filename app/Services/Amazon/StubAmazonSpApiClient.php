@@ -175,4 +175,74 @@ class StubAmazonSpApiClient implements AmazonSpApiClient
             '_meta' => ['driver' => 'stub'],
         ];
     }
+
+    public function getInboundShipments(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'ShipmentData' => [
+                [
+                    'ShipmentId' => 'FBA-STUB-1',
+                    'ShipmentStatus' => 'WORKING',
+                    'DestinationFulfillmentCenterId' => 'PHX3',
+                    'ItemData' => [
+                        ['SellerSKU' => 'SKU-DEMO-001', 'ASIN' => 'B0STUB0001', 'QuantityShipped' => 10, 'QuantityReceived' => 0],
+                    ],
+                ],
+            ],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
+
+    public function getBuyerMessages(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'messages' => [
+                [
+                    'messageId' => 'stub-msg-1',
+                    'amazonOrderId' => '902-STUB-ORDER',
+                    'subject' => 'Stub buyer question',
+                    'body' => 'When will it ship?',
+                    'direction' => 'inbound',
+                    'status' => 'unread',
+                    'sentAt' => now()->subHour()->toIso8601String(),
+                ],
+            ],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
+
+    public function getSupportCases(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'cases' => [
+                [
+                    'caseId' => 'CASE-STUB-1',
+                    'caseType' => 'buyer_message',
+                    'status' => 'open',
+                    'subject' => 'Stub support case',
+                    'openedAt' => now()->subDay()->toIso8601String(),
+                ],
+            ],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
+
+    public function getAdPerformance(AmazonAccount $account, array $params = []): array
+    {
+        return [
+            'currency' => 'USD',
+            'rows' => [
+                [
+                    'campaignId' => 'stub-camp-1001',
+                    'date' => now()->subDay()->toDateString(),
+                    'impressions' => 1000,
+                    'clicks' => 40,
+                    'cost' => 20.0,
+                    'attributedSales14d' => 120.0,
+                    'attributedConversions14d' => 3,
+                ],
+            ],
+            '_meta' => ['driver' => 'stub'],
+        ];
+    }
 }

@@ -47,13 +47,17 @@
     <aside class="erp-nav">
         <div class="erp-brand">跨境 ERP</div>
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">总览</a>
+        <a href="{{ route('admin.reports.index') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">经营报表</a>
         <a href="{{ route('admin.amazon-accounts.index') }}" class="{{ request()->routeIs('admin.amazon-accounts.*') ? 'active' : '' }}">亚马逊账号</a>
         <a href="{{ route('admin.products.index') }}" class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">商品目录</a>
         <a href="{{ route('admin.listings.index') }}" class="{{ request()->routeIs('admin.listings.*') ? 'active' : '' }}">Listing</a>
         <a href="{{ route('admin.inventories.index') }}" class="{{ request()->routeIs('admin.inventories.*') ? 'active' : '' }}">库存 FBA/FBM</a>
+        <a href="{{ route('admin.purchasing.index') }}" class="{{ request()->routeIs('admin.purchasing.*') ? 'active' : '' }}">采购 / 供应商</a>
+        <a href="{{ route('admin.warehouse.index') }}" class="{{ request()->routeIs('admin.warehouse.*') ? 'active' : '' }}">仓配 / 货件</a>
         <a href="{{ route('admin.orders.index') }}" class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">订单</a>
         <a href="{{ route('admin.finance.index') }}" class="{{ request()->routeIs('admin.finance.*') ? 'active' : '' }}">财务结算</a>
-        <a href="{{ route('admin.advertising.index') }}" class="{{ request()->routeIs('admin.advertising.*') ? 'active' : '' }}">广告</a>
+        <a href="{{ route('admin.advertising.index') }}" class="{{ request()->routeIs('admin.advertising.*') ? 'active' : '' }}">广告效果</a>
+        <a href="{{ route('admin.messaging.index') }}" class="{{ request()->routeIs('admin.messaging.*') ? 'active' : '' }}">消息 / Case</a>
         <a href="{{ route('admin.returns.index') }}" class="{{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">退货 / A-Z / 反馈</a>
         <a href="{{ route('admin.sync-jobs.index') }}" class="{{ request()->routeIs('admin.sync-jobs.*') ? 'active' : '' }}">同步任务</a>
         <hr style="border-color:rgba(148,163,184,.2);margin:1rem 0">

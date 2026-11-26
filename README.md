@@ -16,6 +16,11 @@
 | 财务 | 结算单、费用/财务事件（经 Fixture 同步） |
 | 广告 | 广告活动 / 广告组（Fixture → 落库） |
 | 退货 / A-Z / 反馈 | 退货、A-to-Z 索赔、买家反馈 |
+| 采购 / 供应商 | 内部 ERP：供应商、采购单及明细 |
+| 仓配 / 货件 | 仓库、FBA 入库（Fixture）+ FBM 出库追踪 |
+| 消息 / Case | 买家消息与客服 Case（Fixture） |
+| 广告效果 | 日维度展示/点击/花费/销售/ACoS/ROAS |
+| 经营报表 | `/admin/reports` 聚合订单/库存/财务/广告等 |
 | 报表 / 同步 | `SyncJob`、`ReportRequest`、队列 Job、`amazon:sync` / `amazon:report`、定时任务 |
 | 管理 UI | `/admin/*` 中文后台 |
 | JSON API | `/api/v1/*`（session 认证）+ `/api/v1/health` |
@@ -101,7 +106,12 @@ php artisan amazon:fixtures:list
 php artisan amazon:sync
 php artisan amazon:sync --scope=orders
 php artisan amazon:sync --scope=ads
+php artisan amazon:sync --scope=ad_metrics
+php artisan amazon:sync --scope=fba_inbound
+php artisan amazon:sync --scope=messaging
 ```
+
+主要后台路由：`/admin`、`/admin/reports`、`/admin/purchasing`、`/admin/warehouse`、`/admin/messaging`、`/admin/advertising`。
 
 ### 如何新增 Fixture
 
