@@ -1,0 +1,52 @@
+{
+  "payload": {
+    "reportType": "spCampaigns",
+    "currency": "USD",
+    "rows": [
+      {
+        "campaignId": "441100001",
+        "campaignName": "SP Auto - Earbuds",
+        "date": "{{now_sub_days:2}}",
+        "impressions": 12540,
+        "clicks": 312,
+        "cost": 98.45,
+        "attributedSales14d": 642.80,
+        "attributedConversions14d": 18
+      },
+      {
+        "campaignId": "441100001",
+        "campaignName": "SP Auto - Earbuds",
+        "date": "{{now_sub_days:1}}",
+        "impressions": 14210,
+        "clicks": 355,
+        "cost": 110.20,
+        "attributedSales14d": 710.50,
+        "attributedConversions14d": 21
+      },
+      {
+        "campaignId": "441100002",
+        "campaignName": "SP Manual - Brand Defense",
+        "date": "{{now_sub_days:2}}",
+        "impressions": 4200,
+        "clicks": 88,
+        "cost": 52.00,
+        "attributedSales14d": 190.00,
+        "attributedConversions14d": 5
+      },
+      {
+        "campaignId": "441100002",
+        "campaignName": "SP Manual - Brand Defense",
+        "date": "{{now_sub_days:1}}",
+        "impressions": 3900,
+        "clicks": 76,
+        "cost": 48.50,
+        "attributedSales14d": 160.00,
+        "attributedConversions14d": 4
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "AdvertisingAPI.reporting.spCampaigns",
+    "driver": "fixture"
+  }
+}

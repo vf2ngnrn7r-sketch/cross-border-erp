@@ -1,0 +1,40 @@
+{
+  "payload": {
+    "cases": [
+      {
+        "caseId": "CASE-FIX-7001",
+        "caseType": "buyer_message",
+        "status": "open",
+        "subject": "Buyer inquiry follow-up — order 111-2211990-4455667",
+        "description": "Customer reported wrong color; awaiting return label confirmation.",
+        "amazonOrderId": "111-2211990-4455667",
+        "openedAt": "{{now_sub_hours:5}}",
+        "closedAt": null
+      },
+      {
+        "caseId": "CASE-FIX-7002",
+        "caseType": "account_health",
+        "status": "pending",
+        "subject": "ODR metric review notice (fixture)",
+        "description": "Simulated Account Health case for dashboard demo. No real Amazon case.",
+        "amazonOrderId": null,
+        "openedAt": "{{now_sub_days:3}}",
+        "closedAt": null
+      },
+      {
+        "caseId": "CASE-FIX-7003",
+        "caseType": "listing",
+        "status": "resolved",
+        "subject": "ASIN B0FIX002BB detail page suppressed (resolved)",
+        "description": "Listing reinstated after attribute update in fixture timeline.",
+        "amazonOrderId": null,
+        "openedAt": "{{now_sub_days:10}}",
+        "closedAt": "{{now_sub_days:7}}"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "Seller Support / Case Management stubs",
+    "driver": "fixture"
+  }
+}

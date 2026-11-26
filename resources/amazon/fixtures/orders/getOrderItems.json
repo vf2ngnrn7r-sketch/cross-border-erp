@@ -1,0 +1,64 @@
+{
+  "payload": {
+    "111-7845123-9988776": {
+      "OrderItems": [
+        {
+          "OrderItemId": "OI-7845123-1",
+          "ASIN": "B0FIX001AA",
+          "SellerSKU": "SKU-EARBUD-BLK",
+          "Title": "DemoBrand Wireless Earbuds Pro",
+          "QuantityOrdered": 1,
+          "QuantityShipped": 1,
+          "ItemPrice": { "CurrencyCode": "USD", "Amount": "29.99" },
+          "ItemTax": { "CurrencyCode": "USD", "Amount": "2.40" },
+          "PromotionDiscount": { "CurrencyCode": "USD", "Amount": "0.00" },
+          "ShippingPrice": { "CurrencyCode": "USD", "Amount": "0.00" }
+        },
+        {
+          "OrderItemId": "OI-7845123-2",
+          "ASIN": "B0FIX002BB",
+          "SellerSKU": "SKU-STAND-SLV",
+          "Title": "DemoBrand Desktop Stand",
+          "QuantityOrdered": 1,
+          "QuantityShipped": 1,
+          "ItemPrice": { "CurrencyCode": "USD", "Amount": "29.99" },
+          "ItemTax": { "CurrencyCode": "USD", "Amount": "2.40" },
+          "ShippingPrice": { "CurrencyCode": "USD", "Amount": "0.00" }
+        }
+      ]
+    },
+    "111-2211990-4455667": {
+      "OrderItems": [
+        {
+          "OrderItemId": "OI-2211990-1",
+          "ASIN": "B0FIX003CC",
+          "SellerSKU": "SKU-BOX-SET",
+          "Title": "DemoBrand Storage Box Set",
+          "QuantityOrdered": 1,
+          "QuantityShipped": 0,
+          "ItemPrice": { "CurrencyCode": "USD", "Amount": "24.99" },
+          "ItemTax": { "CurrencyCode": "USD", "Amount": "2.00" },
+          "ShippingPrice": { "CurrencyCode": "USD", "Amount": "0.00" }
+        }
+      ]
+    },
+    "111-9080706-1122334": {
+      "OrderItems": [
+        {
+          "OrderItemId": "OI-9080706-1",
+          "ASIN": "B0FIX001AA",
+          "SellerSKU": "SKU-EARBUD-BLK",
+          "Title": "DemoBrand Wireless Earbuds Pro",
+          "QuantityOrdered": 1,
+          "QuantityShipped": 0,
+          "ItemPrice": { "CurrencyCode": "USD", "Amount": "19.99" }
+        }
+      ]
+    }
+  },
+  "_fixture": {
+    "source": "OrdersAPI.getOrderItems",
+    "driver": "fixture",
+    "note": "Keyed by AmazonOrderId for local sync convenience"
+  }
+}

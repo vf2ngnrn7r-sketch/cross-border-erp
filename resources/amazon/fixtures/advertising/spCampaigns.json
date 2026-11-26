@@ -1,0 +1,53 @@
+{
+  "payload": {
+    "campaigns": [
+      {
+        "campaignId": "441100001",
+        "name": "SP Auto - Earbuds",
+        "campaignType": "sponsoredProducts",
+        "targetingType": "auto",
+        "state": "enabled",
+        "dailyBudget": 35.0,
+        "startDate": "2025-08-01",
+        "endDate": null,
+        "premiumBidAdjustment": false,
+        "adGroups": [
+          {
+            "adGroupId": "551100001",
+            "name": "Auto Ad Group",
+            "state": "enabled",
+            "defaultBid": 0.85
+          }
+        ]
+      },
+      {
+        "campaignId": "441100002",
+        "name": "SP Manual - Brand Defense",
+        "campaignType": "sponsoredProducts",
+        "targetingType": "manual",
+        "state": "paused",
+        "dailyBudget": 20.0,
+        "startDate": "2025-09-15",
+        "endDate": null,
+        "adGroups": [
+          {
+            "adGroupId": "551100002",
+            "name": "Exact Brand Terms",
+            "state": "paused",
+            "defaultBid": 1.25
+          },
+          {
+            "adGroupId": "551100003",
+            "name": "Phrase Competitors",
+            "state": "enabled",
+            "defaultBid": 0.65
+          }
+        ]
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "AdvertisingAPI.sp.campaigns",
+    "driver": "fixture"
+  }
+}

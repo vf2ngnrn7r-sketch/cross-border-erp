@@ -1,0 +1,69 @@
+{
+  "payload": {
+    "ShipmentData": [
+      {
+        "ShipmentId": "FBA15FIX0001",
+        "ShipmentName": "FBA Inbound - Earbuds Restock",
+        "ShipFromAddress": {
+          "Name": "SZ Local Warehouse",
+          "AddressLine1": "Nanshan District",
+          "City": "Shenzhen",
+          "StateOrProvinceCode": "GD",
+          "CountryCode": "CN",
+          "PostalCode": "518000"
+        },
+        "DestinationFulfillmentCenterId": "PHX3",
+        "ShipmentStatus": "IN_TRANSIT",
+        "LabelPrepType": "SELLER_LABEL",
+        "AreCasesRequired": false,
+        "BoxContentsSource": "NONE",
+        "EstimatedBoxContentsFee": null,
+        "Carrier": "YunExpress",
+        "TrackingId": "YTFIXTRACK10001",
+        "ShipDate": "{{now_sub_days:5}}",
+        "EstimatedArrival": "{{now_sub_hours:12}}",
+        "ItemData": [
+          {
+            "SellerSKU": "SKU-EARBUD-BLK",
+            "FulfillmentNetworkSKU": "X00FIX001AA",
+            "QuantityShipped": 200,
+            "QuantityReceived": 0,
+            "QuantityInCase": 0,
+            "ASIN": "B0FIX001AA"
+          },
+          {
+            "SellerSKU": "SKU-BOX-SET",
+            "FulfillmentNetworkSKU": "X00FIX003CC",
+            "QuantityShipped": 100,
+            "QuantityReceived": 0,
+            "QuantityInCase": 0,
+            "ASIN": "B0FIX003CC"
+          }
+        ]
+      },
+      {
+        "ShipmentId": "FBA15FIX0002",
+        "ShipmentName": "FBA Inbound - Closed Restock",
+        "DestinationFulfillmentCenterId": "LGB8",
+        "ShipmentStatus": "CLOSED",
+        "Carrier": "Amazon Partnered Carrier",
+        "TrackingId": "TBAFIXCLOSED01",
+        "ShipDate": "{{now_sub_days:20}}",
+        "EstimatedArrival": "{{now_sub_days:12}}",
+        "ItemData": [
+          {
+            "SellerSKU": "SKU-EARBUD-BLK",
+            "FulfillmentNetworkSKU": "X00FIX001AA",
+            "QuantityShipped": 80,
+            "QuantityReceived": 80,
+            "ASIN": "B0FIX001AA"
+          }
+        ]
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "FulfillmentInbound.getShipments",
+    "driver": "fixture"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "payload": {
+    "reportId": "fixture-report-{{uuid}}"
+  },
+  "_fixture": {
+    "source": "Reports.createReport",
+    "driver": "fixture"
+  }
+}

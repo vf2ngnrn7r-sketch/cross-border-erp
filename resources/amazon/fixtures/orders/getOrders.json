@@ -1,0 +1,77 @@
+{
+  "payload": {
+    "Orders": [
+      {
+        "AmazonOrderId": "111-7845123-9988776",
+        "PurchaseDate": "{{now_sub_hours:30}}",
+        "LastUpdateDate": "{{now_sub_hours:8}}",
+        "OrderStatus": "Shipped",
+        "FulfillmentChannel": "AFN",
+        "SalesChannel": "Amazon.com",
+        "ShipServiceLevel": "Standard",
+        "OrderTotal": { "CurrencyCode": "USD", "Amount": "59.98" },
+        "NumberOfItemsShipped": 2,
+        "NumberOfItemsUnshipped": 0,
+        "PaymentMethod": "Other",
+        "MarketplaceId": "ATVPDKIKX0DER",
+        "ShipmentServiceLevelCategory": "Standard",
+        "OrderType": "StandardOrder",
+        "IsPrime": true,
+        "IsBusinessOrder": false,
+        "BuyerInfo": {
+          "BuyerEmail": "buyer-a***@marketplace.amazon.com"
+        },
+        "ShippingAddress": {
+          "City": "Seattle",
+          "StateOrRegion": "WA",
+          "PostalCode": "98101",
+          "CountryCode": "US"
+        }
+      },
+      {
+        "AmazonOrderId": "111-2211990-4455667",
+        "PurchaseDate": "{{now_sub_hours:6}}",
+        "LastUpdateDate": "{{now_sub_hours:1}}",
+        "OrderStatus": "Unshipped",
+        "FulfillmentChannel": "MFN",
+        "SalesChannel": "Amazon.com",
+        "ShipServiceLevel": "Expedited",
+        "OrderTotal": { "CurrencyCode": "USD", "Amount": "24.99" },
+        "NumberOfItemsShipped": 0,
+        "NumberOfItemsUnshipped": 1,
+        "PaymentMethod": "Other",
+        "MarketplaceId": "ATVPDKIKX0DER",
+        "IsPrime": false,
+        "IsBusinessOrder": false,
+        "BuyerInfo": {
+          "BuyerEmail": "buyer-b***@marketplace.amazon.com"
+        },
+        "ShippingAddress": {
+          "City": "Austin",
+          "StateOrRegion": "TX",
+          "PostalCode": "78701",
+          "CountryCode": "US"
+        }
+      },
+      {
+        "AmazonOrderId": "111-9080706-1122334",
+        "PurchaseDate": "{{now_sub_hours:72}}",
+        "LastUpdateDate": "{{now_sub_hours:48}}",
+        "OrderStatus": "Canceled",
+        "FulfillmentChannel": "AFN",
+        "SalesChannel": "Amazon.com",
+        "OrderTotal": { "CurrencyCode": "USD", "Amount": "19.99" },
+        "NumberOfItemsShipped": 0,
+        "NumberOfItemsUnshipped": 0,
+        "MarketplaceId": "ATVPDKIKX0DER",
+        "IsPrime": false
+      }
+    ],
+    "NextToken": null,
+    "CreatedBefore": "{{now}}"
+  },
+  "_fixture": {
+    "source": "OrdersAPI.getOrders",
+    "driver": "fixture"
+  }
+}

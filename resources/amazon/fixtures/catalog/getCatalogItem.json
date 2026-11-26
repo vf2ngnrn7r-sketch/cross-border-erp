@@ -1,0 +1,264 @@
+{
+  "payload": {
+    "items": [
+      {
+        "asin": "B0FIXPARENT1",
+        "role": "parent",
+        "sku": "SKU-EARBUD-PARENT",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Wireless Earbuds Pro (Variation Parent)", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "variation_theme": [{ "name": "COLOR_NAME/SIZE_NAME", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Wireless Earbuds Pro",
+            "browseClassification": { "displayName": "Headphones", "classificationId": "172541" }
+          }
+        ],
+        "productTypes": [{ "productType": "HEADPHONES" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/earbuds-parent-main.jpg",
+            "height": 1000,
+            "width": 1000
+          }
+        ],
+        "bulletPoints": [
+          "Bluetooth 5.3 stable connection",
+          "ENC dual-mic noise reduction",
+          "24h total battery with charging case"
+        ],
+        "description": "DemoBrand Wireless Earbuds Pro variation family for US marketplace demos.",
+        "children": ["B0FIX001AA", "B0FIX001AB", "B0FIX001AC"]
+      },
+      {
+        "asin": "B0FIX001AA",
+        "role": "child",
+        "sku": "SKU-EARBUD-BLK",
+        "parentAsin": "B0FIXPARENT1",
+        "parentSku": "SKU-EARBUD-PARENT",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Wireless Earbuds Pro - Black / Standard", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "color": [{ "value": "Black", "marketplace_id": "ATVPDKIKX0DER" }],
+          "size": [{ "value": "Standard", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Wireless Earbuds Pro - Black",
+            "browseClassification": { "displayName": "Headphones", "classificationId": "172541" }
+          }
+        ],
+        "productTypes": [{ "productType": "HEADPHONES" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/earbud-black-main.jpg",
+            "height": 1000,
+            "width": 1000
+          },
+          {
+            "variant": "PT01",
+            "link": "https://example.invalid/images/earbud-black-case.jpg",
+            "height": 1000,
+            "width": 1000
+          }
+        ],
+        "listPrice": { "currencyCode": "USD", "amount": 29.99 },
+        "cost": 6.50
+      },
+      {
+        "asin": "B0FIX001AB",
+        "role": "child",
+        "sku": "SKU-EARBUD-WHT",
+        "parentAsin": "B0FIXPARENT1",
+        "parentSku": "SKU-EARBUD-PARENT",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Wireless Earbuds Pro - White / Standard", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "color": [{ "value": "White", "marketplace_id": "ATVPDKIKX0DER" }],
+          "size": [{ "value": "Standard", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Wireless Earbuds Pro - White",
+            "browseClassification": { "displayName": "Headphones", "classificationId": "172541" }
+          }
+        ],
+        "productTypes": [{ "productType": "HEADPHONES" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/earbud-white-main.jpg",
+            "height": 1000,
+            "width": 1000
+          }
+        ],
+        "listPrice": { "currencyCode": "USD", "amount": 29.99 },
+        "cost": 6.50
+      },
+      {
+        "asin": "B0FIX001AC",
+        "role": "child",
+        "sku": "SKU-EARBUD-BLU",
+        "parentAsin": "B0FIXPARENT1",
+        "parentSku": "SKU-EARBUD-PARENT",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Wireless Earbuds Pro - Blue / Standard", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "color": [{ "value": "Blue", "marketplace_id": "ATVPDKIKX0DER" }],
+          "size": [{ "value": "Standard", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Wireless Earbuds Pro - Blue",
+            "browseClassification": { "displayName": "Headphones", "classificationId": "172541" }
+          }
+        ],
+        "productTypes": [{ "productType": "HEADPHONES" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/earbud-blue-main.jpg",
+            "height": 1000,
+            "width": 1000
+          }
+        ],
+        "listPrice": { "currencyCode": "USD", "amount": 31.99 },
+        "cost": 6.80
+      },
+      {
+        "asin": "B0FIX002BB",
+        "role": "standalone",
+        "sku": "SKU-STAND-SLV",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Desktop Stand - Silver", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }],
+          "color": [{ "value": "Silver", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Desktop Stand",
+            "browseClassification": { "displayName": "Home Office", "classificationId": "1063498" }
+          }
+        ],
+        "productTypes": [{ "productType": "DESK_ACCESSORY" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/stand-silver-main.jpg",
+            "height": 1200,
+            "width": 1200
+          }
+        ],
+        "bulletPoints": ["Aluminum alloy body", "Adjustable height", "Non-slip base"],
+        "description": "Minimal desk stand for monitors and laptops.",
+        "listPrice": { "currencyCode": "USD", "amount": 34.99 },
+        "cost": 9.20
+      },
+      {
+        "asin": "B0FIX003CC",
+        "role": "standalone",
+        "sku": "SKU-BOX-SET",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand Storage Box Set (3-Pack)", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand Storage Box Set",
+            "browseClassification": { "displayName": "Storage & Organization", "classificationId": "3734451" }
+          }
+        ],
+        "productTypes": [{ "productType": "STORAGE_BOX" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/box-set-main.jpg",
+            "height": 1000,
+            "width": 1000
+          }
+        ],
+        "bulletPoints": ["Stackable design", "3 sizes included", "Dust-proof lids"],
+        "listPrice": { "currencyCode": "USD", "amount": 24.99 },
+        "cost": 5.50
+      },
+      {
+        "asin": "B0FIX004DD",
+        "role": "standalone",
+        "sku": "SKU-CABLE-USB",
+        "attributes": {
+          "item_name": [{ "value": "DemoBrand USB-C Cable 6ft (2-Pack)", "marketplace_id": "ATVPDKIKX0DER" }],
+          "brand": [{ "value": "DemoBrand", "marketplace_id": "ATVPDKIKX0DER" }]
+        },
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "brandName": "DemoBrand",
+            "itemName": "DemoBrand USB-C Cable 6ft",
+            "browseClassification": { "displayName": "Cables", "classificationId": "281407" }
+          }
+        ],
+        "productTypes": [{ "productType": "CABLE" }],
+        "images": [
+          {
+            "variant": "MAIN",
+            "link": "https://example.invalid/images/usb-c-cable-main.jpg",
+            "height": 800,
+            "width": 800
+          }
+        ],
+        "listPrice": { "currencyCode": "USD", "amount": 12.99 },
+        "cost": 1.80
+      }
+    ],
+    "categories": [
+      {
+        "browseNodeId": "172541",
+        "name": "Headphones",
+        "path": "Electronics > Headphones",
+        "amazonProductType": "HEADPHONES",
+        "attributeSchema": ["color", "size", "connectivity"]
+      },
+      {
+        "browseNodeId": "1063498",
+        "name": "Home Office",
+        "path": "Home & Kitchen > Home Office",
+        "amazonProductType": "DESK_ACCESSORY",
+        "attributeSchema": ["color", "material"]
+      },
+      {
+        "browseNodeId": "3734451",
+        "name": "Storage & Organization",
+        "path": "Home & Kitchen > Storage",
+        "amazonProductType": "STORAGE_BOX",
+        "attributeSchema": ["material", "piece_count"]
+      },
+      {
+        "browseNodeId": "281407",
+        "name": "Cables",
+        "path": "Electronics > Accessories > Cables",
+        "amazonProductType": "CABLE",
+        "attributeSchema": ["length", "connector"]
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "CatalogItems.searchCatalogItems + browse nodes",
+    "driver": "fixture"
+  }
+}

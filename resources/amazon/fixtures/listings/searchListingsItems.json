@@ -1,0 +1,189 @@
+{
+  "payload": {
+    "numberOfResults": 6,
+    "items": [
+      {
+        "sku": "SKU-EARBUD-BLK",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX001AA",
+            "productType": "HEADPHONES",
+            "conditionType": "new_new",
+            "status": ["BUYABLE", "DISCOVERABLE"],
+            "itemName": "DemoBrand Wireless Earbuds Pro - Black",
+            "createdDate": "2025-06-01T10:00:00Z",
+            "lastUpdatedDate": "{{now_sub_hours:12}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/earbud-black-main.jpg",
+              "height": 1000,
+              "width": 1000
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "offerType": "B2C",
+            "price": { "currencyCode": "USD", "amount": "29.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "attributes": { "color": "Black", "size": "Standard" },
+        "browseNodeId": "172541",
+        "fulfillmentChannel": "FBA"
+      },
+      {
+        "sku": "SKU-EARBUD-WHT",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX001AB",
+            "productType": "HEADPHONES",
+            "conditionType": "new_new",
+            "status": ["BUYABLE", "DISCOVERABLE"],
+            "itemName": "DemoBrand Wireless Earbuds Pro - White",
+            "lastUpdatedDate": "{{now_sub_hours:10}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/earbud-white-main.jpg",
+              "height": 1000,
+              "width": 1000
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "price": { "currencyCode": "USD", "amount": "29.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "attributes": { "color": "White", "size": "Standard" },
+        "browseNodeId": "172541",
+        "fulfillmentChannel": "FBA"
+      },
+      {
+        "sku": "SKU-EARBUD-BLU",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX001AC",
+            "productType": "HEADPHONES",
+            "conditionType": "new_new",
+            "status": ["DISCOVERABLE"],
+            "itemName": "DemoBrand Wireless Earbuds Pro - Blue",
+            "lastUpdatedDate": "{{now_sub_hours:6}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/earbud-blue-main.jpg",
+              "height": 1000,
+              "width": 1000
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "price": { "currencyCode": "USD", "amount": "31.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "attributes": { "color": "Blue", "size": "Standard" },
+        "browseNodeId": "172541",
+        "fulfillmentChannel": "FBA",
+        "listingStatus": "inactive",
+        "suppressReason": null
+      },
+      {
+        "sku": "SKU-STAND-SLV",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX002BB",
+            "productType": "DESK_ACCESSORY",
+            "conditionType": "new_new",
+            "status": ["BUYABLE"],
+            "itemName": "DemoBrand Desktop Stand",
+            "lastUpdatedDate": "{{now_sub_hours:24}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/stand-silver-main.jpg",
+              "height": 1200,
+              "width": 1200
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "price": { "currencyCode": "USD", "amount": "34.99" },
+            "fulfillmentChannelCode": "DEFAULT"
+          }
+        ],
+        "attributes": { "color": "Silver" },
+        "browseNodeId": "1063498",
+        "fulfillmentChannel": "FBM"
+      },
+      {
+        "sku": "SKU-BOX-SET",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX003CC",
+            "productType": "STORAGE_BOX",
+            "conditionType": "new_new",
+            "status": ["BUYABLE", "DISCOVERABLE"],
+            "itemName": "DemoBrand Storage Box Set",
+            "lastUpdatedDate": "{{now_sub_hours:3}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/box-set-main.jpg",
+              "height": 1000,
+              "width": 1000
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "price": { "currencyCode": "USD", "amount": "24.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "browseNodeId": "3734451",
+        "fulfillmentChannel": "FBA"
+      },
+      {
+        "sku": "SKU-CABLE-USB",
+        "summaries": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "asin": "B0FIX004DD",
+            "productType": "CABLE",
+            "conditionType": "new_new",
+            "status": ["SUPPRESSED"],
+            "itemName": "DemoBrand USB-C Cable 6ft",
+            "lastUpdatedDate": "{{now_sub_hours:48}}",
+            "mainImage": {
+              "link": "https://example.invalid/images/usb-c-cable-main.jpg",
+              "height": 800,
+              "width": 800
+            }
+          }
+        ],
+        "offers": [
+          {
+            "marketplaceId": "ATVPDKIKX0DER",
+            "price": { "currencyCode": "USD", "amount": "12.99" },
+            "fulfillmentChannelCode": "AMAZON_NA"
+          }
+        ],
+        "browseNodeId": "281407",
+        "fulfillmentChannel": "FBA",
+        "listingStatus": "suppressed",
+        "suppressReason": "Missing required product attribute: connector_type"
+      }
+    ]
+  },
+  "_fixture": {
+    "source": "ListingsItems.searchListingsItems",
+    "driver": "fixture"
+  }
+}
